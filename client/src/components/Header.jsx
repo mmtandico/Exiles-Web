@@ -10,7 +10,7 @@ function Header() {
           <a href="#home">Home</a>
           <a href="#about">About Us</a>
           <a href="#teams">Teams</a>
-          <a href="#achivements">Achivements</a>
+          <a href="#achivements">Achievement</a>
           <a href="#contact">Contact</a>
         </nav>
       </div>

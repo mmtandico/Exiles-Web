@@ -5,6 +5,16 @@ import AboutSection from './components/AboutSection'
 import TeamsSection from './components/TeamsSection'
 import AchievementsSection from './components/AchievementsSection'
 import ContactSection from './components/ContactSection'
+import ContentGrid from './components/layout/ContentGrid'
+import TrailersRow from './components/home/TrailersRow'
+import TopNews from './components/home/TopNews'
+import RatingPanel from './components/home/RatingPanel'
+import HallOfFame from './components/home/HallOfFame'
+import SalePromo from './components/home/SalePromo'
+import GalleryGrid from './components/home/GalleryGrid'
+import UpcomingGames from './components/home/UpcomingGames'
+import ReviewsRow from './components/home/ReviewsRow'
+import Footer from './components/Footer'
 import { achievements, contacts, teams } from './data/siteContent'
 
 function App() {
@@ -12,10 +22,25 @@ function App() {
     <main className="page">
       <Header />
       <HeroSection />
+      <ContentGrid>
+        <div data-slot="main">
+          <TrailersRow />
+          <TopNews />
+          <SalePromo />
+          <GalleryGrid />
+          <ReviewsRow />
+        </div>
+        <aside data-slot="sidebar">
+          <RatingPanel />
+          <HallOfFame />
+          <UpcomingGames />
+        </aside>
+      </ContentGrid>
       <AboutSection />
       <TeamsSection teams={teams} />
       <AchievementsSection achievements={achievements} />
       <ContactSection contacts={contacts} />
+      <Footer />
     </main>
   )
 }
