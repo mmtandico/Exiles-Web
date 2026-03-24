@@ -56,10 +56,35 @@
   opacity: 0.9;
   font-family: var(--font-gaming);
   letter-spacing: 0.04em;
+  position: relative;
+  transition: color 0.25s ease, opacity 0.25s ease;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 2px;
+  background: #ef4444;
+  transform: scaleX(0);
+  transform-origin: center;
+  transition: transform 0.25s ease;
 }
 .nav a:hover {
   opacity: 1;
   color: #fff;
+}
+
+.nav a:hover::after,
+.nav a.active::after {
+  transform: scaleX(1);
+}
+
+.nav a.active {
+  color: #fff;
+  opacity: 1;
 }
 
 .hero-section {
