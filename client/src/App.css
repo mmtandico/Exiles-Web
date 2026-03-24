@@ -38,9 +38,10 @@
   background: #0f172a;
 }
 .brand-name {
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.06em;
   text-transform: uppercase;
+  font-family: var(--font-gaming);
 }
 .nav {
   display: inline-flex;
@@ -50,9 +51,11 @@
 .nav a {
   color: #e5e7eb;
   text-decoration: none;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.92rem;
   opacity: 0.9;
+  font-family: var(--font-gaming);
+  letter-spacing: 0.04em;
 }
 .nav a:hover {
   opacity: 1;
@@ -66,10 +69,17 @@
   align-items: end;
   padding: 4rem 1.5rem 3rem;
   background:
-    linear-gradient(to top, rgba(6, 8, 15, 0.9), rgba(6, 8, 15, 0.2)),
-    radial-gradient(circle at 25% 30%, rgba(220, 38, 38, 0.35), transparent 45%),
-    radial-gradient(circle at 70% 60%, rgba(239, 68, 68, 0.25), transparent 55%),
     linear-gradient(140deg, #0f172a, #1f2937 60%, #7f1d1d);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.7) saturate(1.05);
+  transition: background-image 0.8s ease-in-out, opacity 0.8s ease-in-out;
+  opacity: 0.7;
 }
 
 .hero-overlay {
@@ -111,6 +121,7 @@
   letter-spacing: 0.08em;
   background: #dc2626;
   color: #fff;
+  font-family: var(--font-gaming);
 }
 
 .section {
@@ -149,10 +160,58 @@
 
 /* Blocks and panels */
 .block, .panel {
+  position: relative;
   background: rgba(17, 24, 39, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 1rem;
+  overflow: hidden;
+}
+
+/* Corner caps for each layout container */
+.block::before,
+.block::after,
+.panel::before,
+.panel::after,
+.stat-card::before,
+.stat-card::after,
+.team-card::before,
+.team-card::after,
+.achievement-card::before,
+.achievement-card::after,
+.contact-card::before,
+.contact-card::after {
+  content: '';
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  pointer-events: none;
+}
+
+.block::before,
+.panel::before,
+.stat-card::before,
+.team-card::before,
+.achievement-card::before,
+.contact-card::before {
+  top: -1px;
+  left: -1px;
+  border-top: 2px solid rgba(239, 68, 68, 0.9);
+  border-left: 2px solid rgba(239, 68, 68, 0.9);
+  border-top-left-radius: 10px;
+}
+
+.block::after,
+.panel::after,
+.stat-card::after,
+.team-card::after,
+.achievement-card::after,
+.contact-card::after {
+  bottom: -1px;
+  right: -1px;
+  border-bottom: 2px solid rgba(239, 68, 68, 0.9);
+  border-right: 2px solid rgba(239, 68, 68, 0.9);
+  border-bottom-right-radius: 10px;
 }
 .block-head, .panel-head {
   display: flex;
@@ -280,6 +339,8 @@ h3 {
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+  font-family: var(--font-gaming);
+  font-weight: 700;
 }
 
 h1 {
@@ -309,8 +370,9 @@ h1 {
   text-decoration: none;
   font-weight: 700;
   font-size: 0.9rem;
-  letter-spacing: 0.03em;
+  letter-spacing: 0.05em;
   transition: transform 0.2s ease, opacity 0.2s ease;
+  font-family: var(--font-gaming);
 }
 
 .btn-small {
@@ -363,10 +425,12 @@ h1 {
 .team-card,
 .achievement-card,
 .contact-card {
+  position: relative;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   background: linear-gradient(140deg, rgba(17, 24, 39, 0.85), rgba(31, 41, 55, 0.65));
   padding: 1.1rem;
+  overflow: hidden;
 }
 
 .stat-card h3 {
