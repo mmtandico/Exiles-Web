@@ -470,6 +470,21 @@ h1 {
   color: #d1d5db;
 }
 
+.contact-card a {
+  color: #f87171;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.contact-card a:visited {
+  color: #f87171;
+}
+
+.contact-card a:hover {
+  color: #ffffff;
+  text-decoration: underline;
+}
+
 .teams-grid {
   grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
 }

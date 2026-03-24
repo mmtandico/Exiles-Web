@@ -12,7 +12,7 @@ function Footer() {
           <span>© {year} Exiles. All rights reserved.</span>
           <a href="#">Privacy Policy</a>
           <a href="#">Terms & Conditions</a>
-          <a href="#">Discord</a>
+          <a href="https://discord.gg/GcUsDxPdv8" target="_blank" rel="noopener noreferrer">Discord</a>
           <a href="#">TikTok</a>
           <a href="#">Email</a>
         </nav>

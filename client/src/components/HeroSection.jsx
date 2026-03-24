@@ -34,7 +34,7 @@ function HeroSection() {
           <a href="#teams" className="btn btn-primary">
             Explore Teams
           </a>
-          <a href="#contact" className="btn btn-secondary">
+          <a href="https://discord.gg/GcUsDxPdv8" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
             Join Community
           </a>
         </div>
