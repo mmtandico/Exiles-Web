@@ -1,120 +1,82 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const schedule = [
+    { stage: 'Qualifiers', day: 'Friday', time: '7:00 PM PHT' },
+    { stage: 'Semifinals', day: 'Saturday', time: '8:30 PM PHT' },
+    { stage: 'Grand Finals', day: 'Sunday', time: '6:00 PM PHT' },
+  ]
+
+  const players = [
+    { ign: 'BlockRider', role: 'Team Captain', style: 'PVP Shot Caller' },
+    { ign: 'RedStoneX', role: 'Builder', style: 'Base Architect' },
+    { ign: 'CreeperOut', role: 'Support', style: 'Utility / Scout' },
+    { ign: 'EnderRush', role: 'Fragger', style: 'Aggressive Entry' },
+    { ign: 'BedBreaker', role: 'Objective', style: 'Clutch Specialist' },
+  ]
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
+    <main className="page">
+      <section className="hero-section">
+        <div className="hero-overlay" />
+        <div className="hero-content">
+          <p className="eyebrow">Exiles Community Team</p>
+          <h1>Mine. Build. Battle.</h1>
+          <p className="hero-text">
+            Competitive Minecraft squad for scrims, tournaments, and community
+            game nights. Join us as we push for the next championship run.
           </p>
-        </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+          <div className="hero-actions">
+            <a href="#roster" className="btn btn-primary">
+              View Roster
+            </a>
+            <a href="#schedule" className="btn btn-secondary">
+              Match Schedule
+            </a>
+          </div>
         </div>
       </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
+      <section id="schedule" className="schedule-section">
+        <p className="eyebrow">Spring Championship</p>
+        <h2>Community Event Schedule</h2>
+        <div className="schedule-grid">
+          {schedule.map((match) => (
+            <article key={match.stage} className="schedule-card">
+              <span className="tag">{match.stage}</span>
+              <h3>{match.day}</h3>
+              <p>{match.time}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section id="roster" className="roster-section">
+        <p className="eyebrow">Current Lineup</p>
+        <h2>Exiles Active Roster</h2>
+        <div className="roster-grid">
+          {players.map((player) => (
+            <article key={player.ign} className="roster-card">
+              <div className="avatar">{player.ign.slice(0, 2)}</div>
+              <p className="player-role">{player.role}</p>
+              <h3>{player.ign}</h3>
+              <p className="player-style">{player.style}</p>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="cta-section">
+        <h2>Want to join Exiles?</h2>
+        <p>
+          We are recruiting Minecraft players, content creators, and moderators
+          for upcoming events and weekly community games.
+        </p>
+        <a href="#" className="btn btn-primary">
+          Apply to Team
+        </a>
+      </section>
+    </main>
   )
 }
 
