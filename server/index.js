@@ -12,7 +12,7 @@ dotenv.config();
 
 const app = express();
 app.set('trust proxy', 1);
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
 const FRONTEND_URLS = (process.env.FRONTEND_URLS || FRONTEND_URL)
