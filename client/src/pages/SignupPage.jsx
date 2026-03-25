@@ -1,9 +1,39 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 
 const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL || 'http://localhost:3000'
 
 function SignupPage() {
+  const navigate = useNavigate()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleSignupSubmit = async (event) => {
+    event.preventDefault()
+
+    try {
+      setIsSubmitting(true)
+      const res = await fetch(`${AUTH_BASE_URL}/auth/profile`, {
+        credentials: 'include',
+      })
+
+      // If user is already authenticated, go to profile.
+      if (res.ok) {
+        navigate('/profile', { replace: true })
+        return
+      }
+
+      // Current backend auth is OAuth-based, so continue with Google flow.
+      const redirect = encodeURIComponent(window.location.origin)
+      window.location.href = `${AUTH_BASE_URL}/auth/google?redirect=${redirect}`
+    } catch {
+      const redirect = encodeURIComponent(window.location.origin)
+      window.location.href = `${AUTH_BASE_URL}/auth/google?redirect=${redirect}`
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <main className="auth-page page">
       <Header />
@@ -15,7 +45,7 @@ function SignupPage() {
             <p className="auth-subtitle">Sign up to join Exiles</p>
           </header>
 
-          <form className="auth-card" onSubmit={(e) => e.preventDefault()}>
+          <form className="auth-card" onSubmit={handleSignupSubmit}>
             <label className="field">
               <span className="field-label">Username / IGN</span>
               <input className="field-input" type="text" required />
@@ -31,8 +61,8 @@ function SignupPage() {
               <input className="field-input" type="password" required />
             </label>
 
-            <button className="btn btn-primary auth-submit" type="submit">
-              Create Account
+            <button className="btn btn-primary auth-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Creating account...' : 'Create Account'}
             </button>
 
             <p className="auth-switch">
