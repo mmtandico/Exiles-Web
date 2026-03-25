@@ -18,11 +18,32 @@ const FRONTEND_URLS = (process.env.FRONTEND_URLS || FRONTEND_URL)
   .split(',')
   .map((value) => value.trim())
   .filter(Boolean);
+const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
 
 function getServerBaseUrl(req) {
-  const proto = req.headers['x-forwarded-proto'] || req.protocol || 'http';
-  const host = req.headers['x-forwarded-host'] || req.get('host');
+  const forwardedProto = req.headers['x-forwarded-proto'];
+  const forwardedHost = req.headers['x-forwarded-host'];
+  const proto = (Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto || req.protocol || 'http')
+    .toString()
+    .split(',')[0]
+    .trim();
+  const host = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost || req.get('host'))
+    .toString()
+    .split(',')[0]
+    .trim();
   return `${proto}://${host}`;
+}
+
+function getGoogleCallbackUrl(req) {
+  if (GOOGLE_CALLBACK_URL) {
+    return GOOGLE_CALLBACK_URL;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    return null;
+  }
+
+  return `${getServerBaseUrl(req)}/auth/google/callback`;
 }
 
 function getSafeFrontendOrigin(value) {
@@ -123,23 +144,35 @@ app.get('/auth/google', (req, res, next) => {
       .status(500)
       .send('Google OAuth not configured. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.');
   }
+  const callbackURL = getGoogleCallbackUrl(req);
+  if (!callbackURL) {
+    return res
+      .status(500)
+      .send('Google OAuth callback is missing. Set GOOGLE_CALLBACK_URL in production.');
+  }
 
   const requestedOrigin = getSafeFrontendOrigin(req.query.redirect);
   req.session.oauthRedirectUrl = requestedOrigin || FRONTEND_URL;
 
   passport.authenticate('google', {
     scope: ['profile', 'email'],
-    callbackURL: process.env.GOOGLE_CALLBACK_URL || `${getServerBaseUrl(req)}/auth/google/callback`,
+    callbackURL,
   })(req, res, next);
 });
 
 app.get(
   '/auth/google/callback',
   (req, res, next) => {
+    const callbackURL = getGoogleCallbackUrl(req);
+    if (!callbackURL) {
+      const frontend = resolveFrontendUrl(req);
+      return res.redirect(`${frontend}/login`);
+    }
+
     passport.authenticate(
       'google',
       {
-        callbackURL: process.env.GOOGLE_CALLBACK_URL || `${getServerBaseUrl(req)}/auth/google/callback`,
+        callbackURL,
       },
       (err, user) => {
         const frontend = resolveFrontendUrl(req);
