@@ -19,6 +19,7 @@ import Footer from './components/Footer'
 import { achievements, contacts, teams } from './data/siteContent'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
+import ProfilePage from './pages/ProfilePage'
 
 function LandingPage() {
   return (
@@ -55,6 +56,7 @@ function App() {
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

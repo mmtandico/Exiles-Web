@@ -3,6 +3,8 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const { Pool } = require('pg');
 const session = require('express-session');
+const connectPgSimple = require('connect-pg-simple');
+const PgSession = connectPgSimple(session);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -25,7 +27,12 @@ const pool = new Pool({
   },
 });
 
-app.use(cors());
+app.use(
+  cors({
+    origin: FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 app.use(
@@ -33,8 +40,16 @@ app.use(
     secret: process.env.SESSION_SECRET || 'dev_session_secret',
     resave: false,
     saveUninitialized: false,
+    // Vercel uses serverless functions; use a persistent session store so OAuth/login
+    // can work across multiple requests.
+    store: new PgSession({
+      pool,
+      createTableIfMissing: true,
+    }),
     cookie: {
-      secure: false, // local dev (use secure cookies in production with HTTPS)
+      // Cookies require `secure: true` when using `SameSite=None`.
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     },
   })
 );
@@ -89,6 +104,20 @@ app.get(
   }
 );
 
+app.get('/auth/profile', (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({
+      ok: false,
+      message: 'Not authenticated',
+    });
+  }
+
+  return res.json({
+    ok: true,
+    user: req.user,
+  });
+});
+
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
@@ -110,6 +139,11 @@ app.get('/db-check', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
+// Export the app for Vercel (serverless) and only listen locally.
+if (require.main === module) {
+  app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+  });
+}
+
+module.exports = app;
