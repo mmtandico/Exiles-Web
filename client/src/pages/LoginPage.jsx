@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import Header from '../components/Header'
 
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL || 'http://localhost:3000'
+
 function LoginPage() {
   return (
     <main className="auth-page page">
@@ -52,6 +54,9 @@ function LoginPage() {
               <button
                 className="auth-social-btn auth-social-btn--google"
                 type="button"
+                onClick={() => {
+                  window.location.href = `${AUTH_BASE_URL}/auth/google`
+                }}
               >
                 Continue with Google
               </button>

@@ -15,6 +15,7 @@ import SalePromo from './components/home/SalePromo'
 import GalleryGrid from './components/home/GalleryGrid'
 import UpcomingGames from './components/home/UpcomingGames'
 import ReviewsRow from './components/home/ReviewsRow'
+import Footer from './components/Footer'
 import { achievements, contacts, teams } from './data/siteContent'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
@@ -42,6 +43,7 @@ function LandingPage() {
       <TeamsSection teams={teams} />
       <AchievementsSection achievements={achievements} />
       <ContactSection contacts={contacts} />
+      <Footer />
     </main>
   )
 }

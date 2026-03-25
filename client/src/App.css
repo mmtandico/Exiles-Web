@@ -233,13 +233,13 @@
 .content-grid__inner {
   display: grid;
   grid-template-columns: 1fr 320px;
-  gap: 1.25rem;
+  gap: 1.5rem;
 }
 .content-main > * + * {
-  margin-top: 1.25rem;
+  margin-top: 1.75rem;
 }
 .content-side > * + * {
-  margin-top: 1.25rem;
+  margin-top: 1.75rem;
 }
 @media (max-width: 1024px) {
   .content-grid__inner {
@@ -255,6 +255,18 @@
   border-radius: 12px;
   padding: 1rem;
   overflow: hidden;
+}
+
+/* Extra inner padding for the main landing page containers */
+.trailers-block,
+.news-block,
+.promo-block,
+.gallery-block,
+.reviews-block,
+.rating-panel,
+.hof-panel,
+.upcoming-panel {
+  padding: 1.25rem;
 }
 
 /* Corner caps for each layout container */
