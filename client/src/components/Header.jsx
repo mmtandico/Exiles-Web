@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 
 const navItems = [
   { id: 'home', label: 'Home' },
@@ -35,9 +36,15 @@ function Header() {
   const handleNavClick = (event, id) => {
     event.preventDefault()
     const target = document.getElementById(id)
-    if (!target) return
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-    setActiveId(id)
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      setActiveId(id)
+      return
+    }
+
+    // If the section doesn't exist on the current page (e.g., login/signup),
+    // go back to landing page and keep the hash target.
+    window.location.assign(`/#${id}`)
   }
 
   return (
@@ -48,16 +55,27 @@ function Header() {
           <span className="brand-name">Exiles</span>
         </a>
         <nav className="nav">
-          {navItems.map((item) => (
-            <a
-              key={item.id}
-              href={`#${item.id}`}
-              onClick={(e) => handleNavClick(e, item.id)}
-              className={activeId === item.id ? 'active' : ''}
-            >
-              {item.label}
-            </a>
-          ))}
+          <div className="nav-links">
+            {navItems.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={(e) => handleNavClick(e, item.id)}
+                className={activeId === item.id ? 'active' : ''}
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+
+          <div className="nav-auth">
+            <Link to="/login" className="nav-auth-login-text">
+              Login
+            </Link>
+            <Link to="/signup" className="btn btn-small btn-primary">
+              Signup
+            </Link>
+          </div>
         </nav>
       </div>
     </header>

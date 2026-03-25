@@ -1,4 +1,5 @@
 import './App.css'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Header from './components/Header'
 import HeroSection from './components/HeroSection'
 import AboutSection from './components/AboutSection'
@@ -14,10 +15,11 @@ import SalePromo from './components/home/SalePromo'
 import GalleryGrid from './components/home/GalleryGrid'
 import UpcomingGames from './components/home/UpcomingGames'
 import ReviewsRow from './components/home/ReviewsRow'
-import Footer from './components/Footer'
 import { achievements, contacts, teams } from './data/siteContent'
+import LoginPage from './pages/LoginPage'
+import SignupPage from './pages/SignupPage'
 
-function App() {
+function LandingPage() {
   return (
     <main className="page">
       <Header />
@@ -40,8 +42,20 @@ function App() {
       <TeamsSection teams={teams} />
       <AchievementsSection achievements={achievements} />
       <ContactSection contacts={contacts} />
-      <Footer />
     </main>
+  )
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/signup" element={<SignupPage />} />
+        <Route path="*" element={<Navigate to="/" replace />} />
+      </Routes>
+    </BrowserRouter>
   )
 }
 
