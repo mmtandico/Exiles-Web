@@ -50,7 +50,8 @@ function SignupPage() {
                 className="auth-social-btn auth-social-btn--google"
                 type="button"
                 onClick={() => {
-                  window.location.href = `${AUTH_BASE_URL}/auth/google`
+                  const redirect = encodeURIComponent(window.location.origin)
+                  window.location.href = `${AUTH_BASE_URL}/auth/google?redirect=${redirect}`
                 }}
               >
                 Continue with Google

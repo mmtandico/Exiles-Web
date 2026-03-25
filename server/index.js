@@ -14,6 +14,36 @@ const app = express();
 const port = 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
+const FRONTEND_URLS = (process.env.FRONTEND_URLS || FRONTEND_URL)
+  .split(',')
+  .map((value) => value.trim())
+  .filter(Boolean);
+
+function getServerBaseUrl(req) {
+  const proto = req.headers['x-forwarded-proto'] || req.protocol || 'http';
+  const host = req.headers['x-forwarded-host'] || req.get('host');
+  return `${proto}://${host}`;
+}
+
+function getSafeFrontendOrigin(value) {
+  if (!value) return null;
+  try {
+    const parsed = new URL(value);
+    const origin = parsed.origin;
+    if (FRONTEND_URLS.includes(origin)) {
+      return origin;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+function resolveFrontendUrl(req) {
+  const requested = getSafeFrontendOrigin(req.query.redirect);
+  const stored = getSafeFrontendOrigin(req.session?.oauthRedirectUrl);
+  return requested || stored || FRONTEND_URL;
+}
 
 if (!DATABASE_URL) {
   console.error('DATABASE_URL is missing. Add it to your .env file.');
@@ -29,7 +59,12 @@ const pool = new Pool({
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: (origin, callback) => {
+      if (!origin || FRONTEND_URLS.includes(origin)) {
+        return callback(null, true);
+      }
+      return callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
   })
 );
@@ -89,18 +124,41 @@ app.get('/auth/google', (req, res, next) => {
       .send('Google OAuth not configured. Add GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.');
   }
 
-  passport.authenticate('google', { scope: ['profile', 'email'] })(req, res, next);
+  const requestedOrigin = getSafeFrontendOrigin(req.query.redirect);
+  req.session.oauthRedirectUrl = requestedOrigin || FRONTEND_URL;
+
+  passport.authenticate('google', {
+    scope: ['profile', 'email'],
+    callbackURL: process.env.GOOGLE_CALLBACK_URL || `${getServerBaseUrl(req)}/auth/google/callback`,
+  })(req, res, next);
 });
 
 app.get(
   '/auth/google/callback',
-  passport.authenticate('google', {
-    failureRedirect: `${FRONTEND_URL}/login`,
-  }),
+  (req, res, next) => {
+    passport.authenticate(
+      'google',
+      {
+        callbackURL: process.env.GOOGLE_CALLBACK_URL || `${getServerBaseUrl(req)}/auth/google/callback`,
+      },
+      (err, user) => {
+        const frontend = resolveFrontendUrl(req);
+        if (err || !user) {
+          return res.redirect(`${frontend}/login`);
+        }
+
+        req.logIn(user, (loginError) => {
+          if (loginError) {
+            return res.redirect(`${frontend}/login`);
+          }
+          return next();
+        });
+      }
+    )(req, res, next);
+  },
   (req, res) => {
-    // Redirect back to the frontend. If you want “logged in” state, we will need
-    // to persist the session or issue a JWT for the frontend.
-    return res.redirect(`${FRONTEND_URL}/?auth=google`);
+    const frontend = resolveFrontendUrl(req);
+    return res.redirect(`${frontend}/profile`);
   }
 );
 
@@ -115,6 +173,37 @@ app.get('/auth/profile', (req, res) => {
   return res.json({
     ok: true,
     user: req.user,
+  });
+});
+
+app.post('/auth/logout', (req, res) => {
+  req.logout((logoutError) => {
+    if (logoutError) {
+      return res.status(500).json({
+        ok: false,
+        message: 'Failed to log out',
+      });
+    }
+
+    req.session.destroy((sessionError) => {
+      if (sessionError) {
+        return res.status(500).json({
+          ok: false,
+          message: 'Failed to end session',
+        });
+      }
+
+      res.clearCookie('connect.sid', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      });
+
+      return res.json({
+        ok: true,
+        message: 'Logged out successfully',
+      });
+    });
   });
 });
 

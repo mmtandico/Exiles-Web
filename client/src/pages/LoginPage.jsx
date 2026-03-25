@@ -1,9 +1,39 @@
-import { Link } from 'react-router-dom'
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 
 const AUTH_BASE_URL = import.meta.env.VITE_AUTH_BASE_URL || 'http://localhost:3000'
 
 function LoginPage() {
+  const navigate = useNavigate()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+
+  const handleLoginSubmit = async (event) => {
+    event.preventDefault()
+
+    try {
+      setIsSubmitting(true)
+      const res = await fetch(`${AUTH_BASE_URL}/auth/profile`, {
+        credentials: 'include',
+      })
+
+      // If session already exists, go straight to profile.
+      if (res.ok) {
+        navigate('/profile', { replace: true })
+        return
+      }
+
+      // Current backend auth is OAuth-based, so start Google login.
+      const redirect = encodeURIComponent(window.location.origin)
+      window.location.href = `${AUTH_BASE_URL}/auth/google?redirect=${redirect}`
+    } catch {
+      const redirect = encodeURIComponent(window.location.origin)
+      window.location.href = `${AUTH_BASE_URL}/auth/google?redirect=${redirect}`
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
   return (
     <main className="auth-page page">
       <Header />
@@ -15,7 +45,7 @@ function LoginPage() {
             <p className="auth-subtitle">Log in to your Exiles account</p>
           </header>
 
-          <form className="auth-card" onSubmit={(e) => e.preventDefault()}>
+          <form className="auth-card" onSubmit={handleLoginSubmit}>
             <label className="field">
               <span className="field-label">Email</span>
               <input className="field-input" type="email" required />
@@ -36,8 +66,8 @@ function LoginPage() {
               </a>
             </div>
 
-            <button className="btn btn-primary auth-submit" type="submit">
-              Log In
+            <button className="btn btn-primary auth-submit" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? 'Logging in...' : 'Log In'}
             </button>
 
             <p className="auth-switch">
@@ -55,7 +85,8 @@ function LoginPage() {
                 className="auth-social-btn auth-social-btn--google"
                 type="button"
                 onClick={() => {
-                  window.location.href = `${AUTH_BASE_URL}/auth/google`
+                  const redirect = encodeURIComponent(window.location.origin)
+                  window.location.href = `${AUTH_BASE_URL}/auth/google?redirect=${redirect}`
                 }}
               >
                 Continue with Google
