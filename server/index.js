@@ -11,6 +11,7 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 dotenv.config();
 
 const app = express();
+app.set('trust proxy', 1);
 const port = 3000;
 const DATABASE_URL = process.env.DATABASE_URL;
 const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:5173';
@@ -23,10 +24,13 @@ const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
 function getServerBaseUrl(req) {
   const forwardedProto = req.headers['x-forwarded-proto'];
   const forwardedHost = req.headers['x-forwarded-host'];
-  const proto = (Array.isArray(forwardedProto) ? forwardedProto[0] : forwardedProto || req.protocol || 'http')
+  const protoRaw = (Array.isArray(forwardedProto)
+    ? forwardedProto[0]
+    : forwardedProto || req.protocol || 'http')
     .toString()
     .split(',')[0]
     .trim();
+  const proto = process.env.NODE_ENV === 'production' ? 'https' : protoRaw;
   const host = (Array.isArray(forwardedHost) ? forwardedHost[0] : forwardedHost || req.get('host'))
     .toString()
     .split(',')[0]
