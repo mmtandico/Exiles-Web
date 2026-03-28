@@ -7,6 +7,7 @@ const connectPgSimple = require('connect-pg-simple');
 const PgSession = connectPgSimple(session);
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const DiscordStrategy = require('passport-discord').Strategy;
 
 dotenv.config();
 
@@ -20,6 +21,8 @@ const FRONTEND_URLS = (process.env.FRONTEND_URLS || FRONTEND_URL)
   .map((value) => value.trim())
   .filter(Boolean);
 const GOOGLE_CALLBACK_URL = process.env.GOOGLE_CALLBACK_URL;
+const DISCORD_CALLBACK_URL = process.env.DISCORD_CALLBACK_URL;
+const hasDiscordOAuth = Boolean(process.env.DISCORD_CLIENT_ID && process.env.DISCORD_CLIENT_SECRET);
 
 function getServerBaseUrl(req) {
   const forwardedProto = req.headers['x-forwarded-proto'];
@@ -48,6 +51,18 @@ function getGoogleCallbackUrl(req) {
   }
 
   return `${getServerBaseUrl(req)}/auth/google/callback`;
+}
+
+function getDiscordCallbackUrl(req) {
+  if (DISCORD_CALLBACK_URL) {
+    return DISCORD_CALLBACK_URL;
+  }
+
+  if (process.env.NODE_ENV === 'production') {
+    return null;
+  }
+
+  return `${getServerBaseUrl(req)}/auth/discord/callback`;
 }
 
 function getSafeFrontendOrigin(value) {
@@ -142,6 +157,30 @@ passport.use(
   )
 );
 
+if (hasDiscordOAuth) {
+  passport.use(
+    new DiscordStrategy(
+      {
+        clientID: process.env.DISCORD_CLIENT_ID,
+        clientSecret: process.env.DISCORD_CLIENT_SECRET,
+        callbackURL:
+          process.env.DISCORD_CALLBACK_URL || `http://localhost:${port}/auth/discord/callback`,
+        scope: ['identify', 'email'],
+      },
+      (accessToken, refreshToken, profile, done) => {
+        const email = profile?.email || profile?.emails?.[0]?.value;
+        const user = {
+          discordId: profile.id,
+          email: email || null,
+          name: profile.global_name || profile.username,
+          username: profile.username,
+        };
+        return done(null, user);
+      }
+    )
+  );
+}
+
 app.get('/auth/google', (req, res, next) => {
   if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     return res
@@ -175,6 +214,63 @@ app.get(
 
     passport.authenticate(
       'google',
+      {
+        callbackURL,
+      },
+      (err, user) => {
+        const frontend = resolveFrontendUrl(req);
+        if (err || !user) {
+          return res.redirect(`${frontend}/login`);
+        }
+
+        req.logIn(user, (loginError) => {
+          if (loginError) {
+            return res.redirect(`${frontend}/login`);
+          }
+          return next();
+        });
+      }
+    )(req, res, next);
+  },
+  (req, res) => {
+    const frontend = resolveFrontendUrl(req);
+    return res.redirect(`${frontend}/profile`);
+  }
+);
+
+app.get('/auth/discord', (req, res, next) => {
+  if (!process.env.DISCORD_CLIENT_ID || !process.env.DISCORD_CLIENT_SECRET) {
+    return res
+      .status(500)
+      .send('Discord OAuth not configured. Add DISCORD_CLIENT_ID and DISCORD_CLIENT_SECRET.');
+  }
+
+  const callbackURL = getDiscordCallbackUrl(req);
+  if (!callbackURL) {
+    return res
+      .status(500)
+      .send('Discord OAuth callback is missing. Set DISCORD_CALLBACK_URL in production.');
+  }
+
+  const requestedOrigin = getSafeFrontendOrigin(req.query.redirect);
+  req.session.oauthRedirectUrl = requestedOrigin || FRONTEND_URL;
+
+  passport.authenticate('discord', {
+    callbackURL,
+  })(req, res, next);
+});
+
+app.get(
+  '/auth/discord/callback',
+  (req, res, next) => {
+    const callbackURL = getDiscordCallbackUrl(req);
+    if (!callbackURL) {
+      const frontend = resolveFrontendUrl(req);
+      return res.redirect(`${frontend}/login`);
+    }
+
+    passport.authenticate(
+      'discord',
       {
         callbackURL,
       },

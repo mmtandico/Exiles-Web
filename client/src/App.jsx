@@ -20,6 +20,13 @@ import { achievements, contacts, teams } from './data/siteContent'
 import LoginPage from './pages/LoginPage'
 import SignupPage from './pages/SignupPage'
 import ProfilePage from './pages/ProfilePage'
+import AdminLoginPage from './admin/AdminLoginPage'
+import AdminDashboard from './admin/AdminDashboard'
+import AdminUsers from './admin/AdminUsers'
+import AdminContent from './admin/AdminContent'
+import AdminModeration from './admin/AdminModeration'
+import AdminAnalytics from './admin/AdminAnalytics'
+import AdminSettings from './admin/AdminSettings'
 
 function LandingPage() {
   return (
@@ -59,6 +66,13 @@ function App() {
         <Route path="/profile" element={<ProfilePage />} />
         <Route path="/profile/account" element={<ProfilePage />} />
         <Route path="/profile/security" element={<ProfilePage />} />
+        <Route path="/admin/login" element={<AdminLoginPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/users" element={<AdminUsers />} />
+        <Route path="/admin/content" element={<AdminContent />} />
+        <Route path="/admin/moderation" element={<AdminModeration />} />
+        <Route path="/admin/analytics" element={<AdminAnalytics />} />
+        <Route path="/admin/settings" element={<AdminSettings />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </BrowserRouter>

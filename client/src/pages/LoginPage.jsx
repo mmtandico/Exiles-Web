@@ -93,9 +93,7 @@ function LoginPage() {
               </button>
               <a
                 className="auth-social-btn auth-social-btn--discord"
-                href="https://discord.gg/GcUsDxPdv8"
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`${AUTH_BASE_URL}/auth/discord?redirect=${encodeURIComponent(window.location.origin)}`}
               >
                 Continue with Discord
               </a>
