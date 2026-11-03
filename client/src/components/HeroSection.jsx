@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 
-function HeroSection() {
-  const backgrounds = [
-    '/bg/Exiles-bg1.png',
-    '/bg/Exiles-bg2.png',
-    '/bg/Exiles-bg3.png',
-    '/bg/Exiles-bg4.png',
-  ]
+const backgrounds = [
+  '/bg/Exiles-bg1.png',
+  '/bg/Exiles-bg2.png',
+  '/bg/Exiles-bg3.png',
+  '/bg/Exiles-bg4.png',
+]
+
+export default function HeroSection({ onMeetCreators }) {
   const [bgIndex, setBgIndex] = useState(0)
 
   useEffect(() => {
@@ -15,32 +16,64 @@ function HeroSection() {
       setBgIndex((i) => (i + 1) % backgrounds.length)
     }, 6000)
     return () => clearInterval(id)
-  }, [backgrounds])
+  }, [])
 
   const currentBg = backgrounds[bgIndex]
 
+  const handleScrollToCreators = () => {
+    if (onMeetCreators) {
+      onMeetCreators()
+      return
+    }
+    const el = document.getElementById('creators')
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
   return (
-    <section id="home" className="hero-section section">
-      {currentBg && <div className="hero-bg" style={{ backgroundImage: `url('${currentBg}')` }} />}
-      <div className="hero-overlay" />
-      <div className="hero-content">
-        <p className="eyebrow">Minecraft Community Team</p>
-        <h1>Exiles: Rise Together.</h1>
-        <p className="hero-text">
-          We are a competitive and community-focused Minecraft organization built
-          for events, content, and long-term teamwork.
-        </p>
-        <div className="hero-actions">
-          <a href="#teams" className="btn btn-primary">
-            Explore Teams
-          </a>
-          <a href="https://discord.gg/GcUsDxPdv8" target="_blank" rel="noopener noreferrer" className="btn btn-secondary">
-            Join Community
-          </a>
+    <section id="hero" className="tyrant-hero">
+      {/* Previous Exiles Rotating Background Banner */}
+      <div className="tyrant-hero__banner-container">
+        {currentBg && (
+          <div
+            className="tyrant-hero__bg"
+            style={{ backgroundImage: `url('${currentBg}')` }}
+          />
+        )}
+        <div className="tyrant-hero__banner-overlay" />
+      </div>
+
+      {/* Hero Headline & Statement Section */}
+      <div className="tyrant-hero__statement">
+        <div className="tyrant-container tyrant-hero__statement-grid">
+          {/* Left Column */}
+          <div className="tyrant-hero__statement-left">
+            <div className="tyrant-hero__eyebrow">
+              <span className="tyrant-hero__bullet" />
+              <span>A CULTURE OF OUR OWN</span>
+            </div>
+            <h1 className="tyrant-hero__title">
+              WE RISE ABOVE
+              <br />
+              THE REST.
+            </h1>
+          </div>
+
+          {/* Right Column */}
+          <div className="tyrant-hero__statement-right">
+            <p className="tyrant-hero__desc">
+              A Philippine esports and entertainment organization.
+              Creators. Competitors. One collective.
+            </p>
+            <button
+              type="button"
+              className="tyrant-btn tyrant-btn--primary"
+              onClick={handleScrollToCreators}
+            >
+              MEET THE CREATORS
+            </button>
+          </div>
         </div>
       </div>
     </section>
   )
 }
-
-export default HeroSection

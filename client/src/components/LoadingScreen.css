@@ -1,0 +1,179 @@
+.exiles-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background-color: #080808;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  user-select: none;
+  overflow: hidden;
+  opacity: 1;
+  transform: scale(1);
+  filter: blur(0);
+  transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.55s cubic-bezier(0.4, 0, 0.2, 1),
+              filter 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.exiles-loader--exiting {
+  opacity: 0;
+  transform: scale(1.035);
+  filter: blur(6px);
+  pointer-events: none;
+}
+
+/* Subtle background vignette and grain for cinematic depth */
+.exiles-loader__vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at center, rgba(20, 20, 20, 0) 50%, rgba(0, 0, 0, 0.75) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Center Content */
+.exiles-loader__center {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 0 1.5rem;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Logo Title */
+.exiles-loader__title {
+  margin: 0;
+  font-family: var(--font-display, 'Chakra Petch', 'Orbitron', sans-serif);
+  font-size: clamp(3.75rem, 8.5vw, 6.75rem);
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  line-height: 0.95;
+  color: #ff3700;
+  text-transform: uppercase;
+  text-shadow: 0 0 24px rgba(255, 55, 0, 0.35);
+  transition: transform 0.3s ease;
+}
+
+/* Subtitle lines */
+.exiles-loader__subtitles {
+  margin-top: 1.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.exiles-loader__subtitle-line {
+  margin: 0;
+  font-family: var(--font-mono, 'Share Tech Mono', monospace);
+  font-size: clamp(0.68rem, 1.25vw, 0.82rem);
+  font-weight: 500;
+  letter-spacing: 0.26em;
+  color: #8c929d;
+  text-transform: uppercase;
+  line-height: 1.6;
+}
+
+/* Enter Button */
+.exiles-loader__enter-btn {
+  margin-top: 2.25rem;
+  appearance: none;
+  border: none;
+  outline: none;
+  background: #ff3700;
+  color: #050505;
+  font-family: var(--font-display, 'Chakra Petch', 'Orbitron', sans-serif);
+  font-size: 0.95rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.8rem 2.75rem;
+  min-width: 160px;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(255, 55, 0, 0.25);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.exiles-loader__enter-btn:hover {
+  background: #ff4514;
+  color: #000000;
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 0 30px rgba(255, 55, 0, 0.65), 0 6px 20px rgba(0, 0, 0, 0.4);
+}
+
+.exiles-loader__enter-btn:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: 0 0 15px rgba(255, 55, 0, 0.4);
+}
+
+/* Bottom elements */
+.exiles-loader__footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.exiles-loader__footer-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem 0.85rem;
+  font-family: var(--font-mono, 'Share Tech Mono', monospace);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  color: #6b7280;
+  text-transform: uppercase;
+}
+
+.exiles-loader__est {
+  color: #6b7280;
+}
+
+.exiles-loader__counter {
+  color: #838a96;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Bottom Line Accent */
+.exiles-loader__bottom-bar {
+  height: 2px;
+  width: 100%;
+  background: rgba(255, 55, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.exiles-loader__bottom-progress {
+  height: 100%;
+  background: #ff3700;
+  box-shadow: 0 -1px 8px rgba(255, 55, 0, 0.7);
+  transition: width 0.12s linear;
+}
+
+@media (max-width: 600px) {
+  .exiles-loader__subtitle-line {
+    letter-spacing: 0.16em;
+  }
+  .exiles-loader__enter-btn {
+    padding: 0.75rem 2.25rem;
+    min-width: 140px;
+  }
+  .exiles-loader__footer-meta {
+    padding: 0 1rem 0.65rem;
+    font-size: 0.68rem;
+  }
+}

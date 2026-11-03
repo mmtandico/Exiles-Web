@@ -1,85 +1,55 @@
-import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
-const navItems = [
-  { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About Us' },
-  { id: 'teams', label: 'Teams' },
-  { id: 'achivements', label: 'Achievement' },
-  { id: 'contact', label: 'Contact' },
+const navLinks = [
+  { id: 'creators', label: 'CREATORS' },
+  { id: 'management', label: 'MANAGEMENT' },
+  { id: 'teams', label: 'TEAMS' },
+  { id: 'shop', label: 'SHOP' },
+  { id: 'socials', label: 'SOCIALS' },
+  { id: 'about', label: 'ABOUT US' },
 ]
 
-function Header() {
-  const [activeId, setActiveId] = useState('home')
+export default function Header() {
+  const [scrolled, setScrolled] = useState(false)
+  const [activeSection, setActiveSection] = useState('')
 
   useEffect(() => {
-    const sections = navItems
-      .map((item) => document.getElementById(item.id))
-      .filter(Boolean)
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)
-        if (visible[0]?.target?.id) {
-          setActiveId(visible[0].target.id)
-        }
-      },
-      { threshold: [0.25, 0.5, 0.75], rootMargin: '-20% 0px -55% 0px' }
-    )
-
-    sections.forEach((section) => observer.observe(section))
-    return () => observer.disconnect()
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 30)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleNavClick = (event, id) => {
-    event.preventDefault()
-    const target = document.getElementById(id)
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      setActiveId(id)
-      return
+  const handleNavClick = (e, id) => {
+    e.preventDefault()
+    setActiveSection(id)
+    const el = document.getElementById(id)
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
-
-    // If the section doesn't exist on the current page (e.g., login/signup),
-    // go back to landing page and keep the hash target.
-    window.location.assign(`/#${id}`)
   }
 
   return (
-    <header className="site-header">
-      <div className="site-header__inner">
-        <a href="#home" className="brand" onClick={(e) => handleNavClick(e, 'home')}>
-          <img src="/Exiles-logo.png" alt="Exiles logo" className="brand-logo" />
-          <span className="brand-name">Exiles</span>
+    <header className={`tyrant-header ${scrolled ? 'tyrant-header--scrolled' : ''}`}>
+      <div className="tyrant-header__inner">
+        <a href="#hero" className="tyrant-header__logo" onClick={(e) => handleNavClick(e, 'hero')}>
+          EXILES
         </a>
-        <nav className="nav">
-          <div className="nav-links">
-            {navItems.map((item) => (
-              <a
-                key={item.id}
-                href={`#${item.id}`}
-                onClick={(e) => handleNavClick(e, item.id)}
-                className={activeId === item.id ? 'active' : ''}
-              >
-                {item.label}
-              </a>
-            ))}
-          </div>
 
-          <div className="nav-auth">
-            <Link to="/login" className="nav-auth-login-text">
-              Login
-            </Link>
-            <Link to="/signup" className="btn btn-small btn-primary">
-              Signup
-            </Link>
-          </div>
+        <nav className="tyrant-header__nav" aria-label="Main Navigation">
+          {navLinks.map((item) => (
+            <a
+              key={item.id}
+              href={`#${item.id}`}
+              onClick={(e) => handleNavClick(e, item.id)}
+              className={`tyrant-header__link ${activeSection === item.id ? 'active' : ''}`}
+            >
+              {item.label}
+            </a>
+          ))}
         </nav>
       </div>
     </header>
   )
 }
-
-export default Header

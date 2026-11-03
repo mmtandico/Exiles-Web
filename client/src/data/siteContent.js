@@ -1,61 +1,214 @@
+export const navLinks = [
+  { id: 'creators', label: 'CREATORS' },
+  { id: 'management', label: 'MANAGEMENT' },
+  { id: 'teams', label: 'TEAMS' },
+  { id: 'inside', label: 'INSIDE EXILES' },
+  { id: 'about', label: 'ABOUT US' },
+]
+
+export const insideShowcase = [
+  {
+    id: '01',
+    title: 'EXILES CORE SQUAD',
+    subtitle: 'The founding competitive lineup in studio formation.',
+    caption: 'The original roster uniting top-tier talent from across the region.',
+    image: 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: '02',
+    title: 'PROJECT RADIANT',
+    subtitle: 'Valorant Mobile LAN Championship',
+    caption: 'The first Valorant Mobile LAN tournament in the Philippines.',
+    image: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: '03',
+    title: 'JYSIGMA (JBC) SPONSOR',
+    subtitle: 'Official Strategic Partnership',
+    caption: 'Expanding competitive opportunities and corporate support for local talent.',
+    image: 'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: '04',
+    title: 'EXILES LIVE ARENA',
+    subtitle: 'Community Scrims & Showmatches',
+    caption: 'Over 5,000 live viewers watching the Exiles invitational cup finals.',
+    image: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80',
+  },
+  {
+    id: '05',
+    title: 'DROP 01 APPAREL',
+    subtitle: 'Streetwear & Technical Jerseys',
+    caption: 'Engineered for competitors and supporters. Designed in Manila.',
+    image: 'https://images.unsplash.com/photo-1576995853123-5a10305d93c0?auto=format&fit=crop&w=1200&q=80',
+  },
+]
+
+export const creators = [
+  {
+    id: 'andrea-hiz',
+    name: 'ANDREA HIZ',
+    role: 'CONTENT CREATOR',
+    category: 'STREAMERS',
+    likes: '1.4K',
+    image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80',
+    bio: 'Variety streamer and lifestyle creator building high-energy gaming sessions and community watch parties.',
+    socials: { twitch: 'andreahiz', youtube: '@andreahiz', tiktok: '@andreahiz' },
+  },
+  {
+    id: 'adam-manuel',
+    name: 'ADAM MANUEL',
+    role: 'CONTENT CREATOR',
+    category: 'LIFESTYLE',
+    likes: '982',
+    image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&w=800&q=80',
+    bio: 'Esports host, vlogger, and lifestyle creator highlighting behind-the-scenes tournament life.',
+    socials: { youtube: '@adammanuel', instagram: '@adammanuel' },
+  },
+  {
+    id: 'anj',
+    name: 'ANJ',
+    role: 'CONTENT CREATOR',
+    category: 'STREAMERS',
+    likes: '2.1K',
+    image: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=800&q=80',
+    bio: 'Competitive FPS specialist and partner streamer known for sniper clips and tactical guides.',
+    socials: { twitch: 'anjgaming', tiktok: '@anj_fps' },
+  },
+  {
+    id: 'badman',
+    name: 'BADMAN',
+    role: 'CONTENT CREATOR',
+    category: 'ESPORTS',
+    likes: '3.5K',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+    bio: 'Exiles flagship FPS duel champion and creator pushing competitive boundaries in Southeast Asia.',
+    socials: { youtube: '@badman', x: '@badman_ex' },
+  },
+  {
+    id: 'valkyrie',
+    name: 'VALKYRIE',
+    role: 'CONTENT CREATOR',
+    category: 'VARIETY',
+    likes: '1.8K',
+    image: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=800&q=80',
+    bio: 'Creative gaming broadcaster passionate about tactical teamwork, community events, and indie showcases.',
+    socials: { twitch: 'valkyrie_ex', tiktok: '@valkyrie' },
+  },
+  {
+    id: 'raze-k',
+    name: 'RAZE K',
+    role: 'CONTENT CREATOR',
+    category: 'ESPORTS',
+    likes: '2.7K',
+    image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=800&q=80',
+    bio: 'Pro circuit veteran and content powerhouse sharing match analysis and clutch moments.',
+    socials: { youtube: '@razek', instagram: '@raze.k' },
+  },
+  {
+    id: 'cipher',
+    name: 'CIPHER',
+    role: 'CONTENT CREATOR',
+    category: 'STREAMERS',
+    likes: '1.1K',
+    image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=800&q=80',
+    bio: 'Daily live broadcaster and duelist delivering entertainment, ranked climbs, and squad collabs.',
+    socials: { twitch: 'cipher_live', x: '@cipher_gg' },
+  },
+  {
+    id: 'kira-m',
+    name: 'KIRA M',
+    role: 'CONTENT CREATOR',
+    category: 'LIFESTYLE',
+    likes: '1.9K',
+    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=800&q=80',
+    bio: 'Storyteller, host, and gaming presenter connecting fans with the personal stories of competitors.',
+    socials: { youtube: '@kiram', tiktok: '@kira.m' },
+  },
+]
+
+export const management = [
+  {
+    id: 'boss-a',
+    name: 'BOSS A',
+    role: 'CEO',
+    department: 'EXECUTIVES',
+    image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=800&q=80',
+    bio: 'Leading strategic vision, expansion, and organizational partnerships across global esports.',
+  },
+  {
+    id: 'golden',
+    name: 'GOLDEN',
+    role: 'PRESIDENT',
+    department: 'EXECUTIVES',
+    image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=800&q=80',
+    bio: 'Overseeing company growth, competitive divisions, and creator acquisition programs.',
+  },
+  {
+    id: 'edsel',
+    name: 'EDSEL',
+    role: 'VICE PRESIDENT',
+    department: 'OPERATIONS',
+    image: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?auto=format&fit=crop&w=800&q=80',
+    bio: 'Driving live production execution, player development pipelines, and sponsor integration.',
+  },
+  {
+    id: 'lan',
+    name: 'LAN',
+    role: 'EXECUTIVE DIRECTOR',
+    department: 'OPERATIONS',
+    image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=800&q=80',
+    bio: 'Directing community initiatives, tournament standards, and international media outreach.',
+  },
+  {
+    id: 'marcus',
+    name: 'MARCUS V',
+    role: 'HEAD OF ESPORTS',
+    department: 'OPERATIONS',
+    image: 'https://images.unsplash.com/photo-1519345182560-3f2917c472ef?auto=format&fit=crop&w=800&q=80',
+    bio: 'Managing rosters, tournament schedules, scouting prospects, and tactical coaching staff.',
+  },
+  {
+    id: 'sophia',
+    name: 'SOPHIA CHEN',
+    role: 'CREATIVE DIRECTOR',
+    department: 'CREATIVES',
+    image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=800&q=80',
+    bio: 'Architecting Exiles visual identity, apparel collections, 3D graphics, and cinematic productions.',
+  },
+  {
+    id: 'daniel',
+    name: 'DANIEL REYES',
+    role: 'PRODUCTION LEAD',
+    department: 'CREATIVES',
+    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=800&q=80',
+    bio: 'Heading broadcast engineering, live tournament streams, and multimedia storytelling.',
+  },
+  {
+    id: 'chloe',
+    name: 'CHLOE CRUZ',
+    role: 'COMMUNITY DIRECTOR',
+    department: 'OPERATIONS',
+    image: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=800&q=80',
+    bio: 'Fostering 100K+ community members across Discord, fan meetups, and grassroots cups.',
+  },
+]
+
 export const teams = [
-  { name: 'Exiles Survival', focus: 'Hardcore SMP', members: '12 Active' },
-  { name: 'Exiles PvP', focus: 'Duels and Bedwars', members: '9 Active' },
-  { name: 'Exiles Builders', focus: 'Mega Base Builds', members: '7 Active' },
+  { name: 'Exiles Valorant', focus: 'VCL Southeast Asia', members: '5 Active + Coach' },
+  { name: 'Exiles Mobile', focus: 'Invitational LAN Circuit', members: '4 Active' },
+  { name: 'Exiles Creators', focus: 'Live Streams & VODs', members: '27 Active' },
 ]
 
 export const achievements = [
-  '1st Place - Community Bedwars Cup 2025',
-  'Top 4 - Southeast MC Clash',
-  '100+ weekly active community players',
+  'Champion - Valorant Mobile LAN Tournament 2025',
+  '1st Place - SEA Regional Bedwars Invitationals',
+  '27+ Exclusive Creators • 100K+ Strong Community',
 ]
 
 export const contacts = [
   { label: 'Discord', value: 'discord.gg/exiles' },
-  { label: 'Email', value: 'team.exilesmc@gmail.com' },
-  { label: 'Instagram', value: '@exiles.minecraft' },
-]
-
-export const trailers = [
-  { title: 'Shadow Quest' },
-  { title: 'Star Wars' },
-  { title: 'Beast Hunt' },
-  { title: 'Guardian Rise' },
-]
-
-export const topNews = [
-  { tag: 'News', date: 'Apr 6', title: 'Tournament signups now open', snippet: 'Join our seasonal event with ranked brackets and weekly highlights.' },
-  { tag: 'Update', date: 'Apr 5', title: 'New server mini-games', snippet: 'Parkour, SkyWars, and more coming to the Exiles hub.' },
-  { tag: 'Guide', date: 'Apr 4', title: 'How to scrim with Exiles', snippet: 'Best practices for scheduling, map pools, and comms.' },
-  { tag: 'Feature', date: 'Apr 3', title: 'Behind the builds', snippet: 'Meet the architects powering our mega projects.' },
-]
-
-export const promos = [
-  { title: 'Game Uncharted', discount: '-60%' },
-  { title: 'Iron Man PSA', discount: '-30%' },
-  { title: 'Assassin’s Creed', discount: '-30%' },
-]
-
-export const gallery = new Array(8).fill(0).map((_, i) => ({ i }))
-
-export const hallOfFame = [
-  { title: 'Watch Dogs 2', score: '10' },
-  { title: 'Dirt Rally', score: '9.7' },
-  { title: 'Xenoblade Chronicles X', score: '9.3' },
-  { title: 'Just Cause 3', score: '8.9' },
-  { title: 'Call of Duty: BO3', score: '8.7' },
-]
-
-export const upcoming = [
-  { title: 'Modern Combat 5', date: 'May 10' },
-  { title: 'Need For Speed: Most Wanted', date: 'May 22' },
-  { title: 'Rise of Ron', date: 'Jun 1' },
-]
-
-export const reviews = [
-  { title: 'Captain Spotlight: BlockRider', badge: 'Team' },
-  { title: 'Builder Showcase: RedStoneX Mega Base', badge: 'Build' },
-  { title: 'Scrim Report: Exiles vs NightClan (2–1)', badge: 'Match' },
-  { title: 'Strategy Notes: Bed Defense Variants', badge: 'Guide' },
-  { title: 'Community MVP: EnderRush', badge: 'MVP' },
+  { label: 'Email', value: 'contact@exiles.gg' },
+  { label: 'Instagram', value: '@exiles.official' },
+  { label: 'TikTok', value: '@exilesesports' },
 ]
