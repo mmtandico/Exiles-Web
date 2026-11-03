@@ -4,11 +4,10 @@ import { GlobeIcon, UserIcon, DownloadIcon } from './Icons'
 
 const apexNavLinks = [
   { id: 'about', label: 'ABOUT' },
-  { id: 'management', label: 'LEGENDS' },
+  { id: 'management', label: 'COMMUNITY' },
   { id: 'teams', label: 'GAMES' },
-  { id: 'inside', label: 'NEWS' },
   { id: 'teams', label: 'ESPORTS', key: 'esports' },
-  { id: 'socials', label: 'COMMUNITY' },
+  { id: 'socials', label: 'SOCIALS' },
 ]
 
 export default function Header() {
@@ -43,12 +42,12 @@ export default function Header() {
           onClick={(e) => handleNavClick(e, 'hero')}
           onMouseEnter={playHoverSound}
         >
-          <span className="apex-header__emblem-box">
-            <img src="/Exiles-logo.png" alt="Exiles" className="apex-header__emblem-img" />
+          <span className="apex-header__logo-frame">
+            <img src="/Exiles-logo.png" alt="Exiles Logo" className="apex-header__logo-img" />
           </span>
           <span className="apex-header__logo-stack">
             <span className="apex-header__logo-main">EXILES</span>
-            <span className="apex-header__logo-sub">— ESPORTS —</span>
+            <span className="apex-header__logo-sub">— COMMUNITY —</span>
           </span>
         </a>
 
@@ -86,7 +85,7 @@ export default function Header() {
             onMouseEnter={playHoverSound}
           >
             <UserIcon className="apex-svg-icon apex-svg-icon--sm" />
-            <span>LEGENDS</span>
+            <span>COMMUNITY</span>
           </a>
           <a
             href="https://discord.gg/GcUsDxPdv8"

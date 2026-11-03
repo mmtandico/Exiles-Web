@@ -8,13 +8,11 @@ export default function ProfileModal({ profile, onClose }) {
     onClose()
   }
 
-  const isAnimatedCommunityProfile = Boolean(profile.animPattern)
-
   return (
     <div className="tyrant-modal-overlay" onClick={handleClose} role="dialog" aria-modal="true">
       <div
         className="tyrant-modal-box"
-        style={{ '--profile-accent': profile.accent || '#dc2626' }}
+        style={{ '--profile-accent': '#dc2626' }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -31,30 +29,16 @@ export default function ProfileModal({ profile, onClose }) {
         </button>
 
         <div className="tyrant-modal-content">
+          {/* Clean Minecraft Character Avatar Inside Profile Box (No Circle Rings) */}
           <div className="tyrant-modal-image-col">
-            {isAnimatedCommunityProfile ? (
-              <div className="tyrant-animated-profile tyrant-animated-profile--modal">
-                <div className="tyrant-animated-profile__aura" />
-                <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--outer" />
-                <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--inner" />
-                <div className="tyrant-animated-profile__scanline" />
-                <div className="tyrant-animated-profile__particles">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className="tyrant-animated-profile__mc-wrap tyrant-animated-profile__mc-wrap--modal">
-                  <img
-                    src={profile.image}
-                    alt={profile.name}
-                    className="tyrant-animated-profile__mc-img"
-                  />
-                </div>
-              </div>
-            ) : (
-              <img src={profile.image} alt={profile.name} className="tyrant-modal-img" />
-            )}
+            <div className="apex-modal-portrait">
+              <div className="apex-modal-portrait__slash" />
+              <img
+                src={profile.image}
+                alt={profile.name}
+                className="apex-modal-portrait__avatar"
+              />
+            </div>
           </div>
 
           <div className="tyrant-modal-info-col">
@@ -109,7 +93,7 @@ export default function ProfileModal({ profile, onClose }) {
             </button>
           </div>
         </div>
-        </div>
       </div>
-      )
+    </div>
+  )
 }

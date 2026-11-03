@@ -4,7 +4,6 @@ import LoadingScreen from './components/LoadingScreen'
 import Header from './components/Header'
 import HeroSection from './components/HeroSection'
 import AboutSection from './components/AboutSection'
-import InsideSection from './components/InsideSection'
 import ManagementSection from './components/ManagementSection'
 import TeamsSection from './components/TeamsSection'
 import Footer from './components/Footer'
@@ -68,10 +67,7 @@ function App() {
       {/* 5. 10 Competitive Games & Divisions */}
       <TeamsSection teams={teams} />
 
-      {/* 6. "LATEST NEWS" 4-Column News Row */}
-      <InsideSection />
-
-      {/* 7. "STAY UP TO DATE" Subscribe Banner + Esports Multi-Column Footer */}
+      {/* 6. "STAY UP TO DATE" Subscribe Banner + Esports Multi-Column Footer */}
       <Footer />
 
       {/* Floating Sound Toggle Button (bottom-right) */}

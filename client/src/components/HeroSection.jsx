@@ -64,7 +64,7 @@ export default function HeroSection({ onMeetCreators, onExploreTeams }) {
               <span className="apex-hero__giant-main">EXILES</span>
               <div className="apex-hero__giant-sub-row">
                 <span className="apex-hero__line" />
-                <span className="apex-hero__giant-sub">LEGENDS</span>
+                <span className="apex-hero__giant-sub">COMMUNITY</span>
                 <span className="apex-hero__line" />
               </div>
             </div>

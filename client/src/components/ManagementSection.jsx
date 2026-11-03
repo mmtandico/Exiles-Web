@@ -3,34 +3,18 @@ import { management } from '../data/siteContent'
 import { playClickSound, playHoverSound, playEnterSound } from '../utils/soundEffects'
 import { BoltIcon } from './Icons'
 
-const departments = ['ALL', 'FOUNDER', 'EXECUTIVE', 'ADMINS', 'MANAGERS', 'DIRECTORS']
+const hierarchyTiers = [
+  { key: 'FOUNDER', tierNum: 'TIER 01', label: 'FOUNDER', cols: 'tier-grid--1', branchCount: 1 },
+  { key: 'EXECUTIVE', tierNum: 'TIER 02', label: 'EXECUTIVE', cols: 'tier-grid--1', branchCount: 1 },
+  { key: 'ADMINS', tierNum: 'TIER 03', label: 'ADMINS', cols: 'tier-grid--3', branchCount: 3 },
+  { key: 'MANAGERS', tierNum: 'TIER 04', label: 'MANAGERS', cols: 'tier-grid--2', branchCount: 2 },
+  { key: 'DIRECTORS', tierNum: 'TIER 05', label: 'DIRECTORS', cols: 'tier-grid--6', branchCount: 6 },
+]
+
+const filterTabs = ['ALL HIERARCHY', 'FOUNDER', 'EXECUTIVE', 'ADMINS', 'MANAGERS', 'DIRECTORS']
 
 export default function ManagementSection({ onOpenProfile }) {
-  const [activeDept, setActiveDept] = useState('ALL')
-  const [pageOffset, setPageOffset] = useState(0)
-  const [showAllGrid, setShowAllGrid] = useState(false)
-
-  const filteredStaff =
-    activeDept === 'ALL'
-      ? management
-      : management.filter((m) => m.department === activeDept)
-
-  const visibleSlantedList = showAllGrid
-    ? filteredStaff
-    : filteredStaff
-    .slice(pageOffset, pageOffset + 6)
-    .concat(
-      pageOffset + 6 > filteredStaff.length
-        ? filteredStaff.slice(0, Math.max(0, 6 - (filteredStaff.length - pageOffset)))
-        : []
-    )
-    .slice(0, Math.min(6, filteredStaff.length))
-
-  const handleNextPage = () => {
-    playClickSound('primary')
-    if (filteredStaff.length <= 6) return
-    setPageOffset((prev) => (prev + 6) % filteredStaff.length)
-  }
+  const [activeTab, setActiveTab] = useState('ALL HIERARCHY')
 
   const handleOpenStaff = (person) => {
     playEnterSound()
@@ -45,51 +29,40 @@ export default function ManagementSection({ onOpenProfile }) {
     }
   }
 
+  const visibleTiers =
+    activeTab === 'ALL HIERARCHY'
+      ? hierarchyTiers
+      : hierarchyTiers.filter((t) => t.key === activeTab)
+
   return (
     <section id="management" className="apex-legends-section tyrant-management">
       <div className="tyrant-container tyrant-management__container">
-        {/* Apex-Style Section Header Row */}
+        {/* Section Header */}
         <div className="apex-section-header reveal-on-scroll">
           <div className="apex-section-header__left">
-            <h2 className="apex-section-header__title">CHOOSE YOUR LEGEND</h2>
+            <h2 className="apex-section-header__title">TEAM EXILES COMMAND STRUCTURE</h2>
             <span className="apex-section-header__red-bar" />
             <span className="apex-section-header__sub">
-              TEAM EXILES COMMUNITY ({management.length})
+              FOUNDER TO DIRECTORS HIERARCHY ({management.length} MEMBERS)
             </span>
-          </div>
-
-          <div className="apex-section-header__right">
-            <button
-              type="button"
-              className="apex-view-all-link"
-              onClick={() => {
-                playClickSound('primary')
-                setShowAllGrid((prev) => !prev)
-              }}
-              onMouseEnter={playHoverSound}
-            >
-              {showAllGrid ? 'SHOW 6-SLANT ROW' : `VIEW ALL ${filteredStaff.length} LEGENDS`}{' '}
-              <span>→</span>
-            </button>
           </div>
         </div>
 
-        {/* Hierarchy Filter Tabs + Random Spotlight */}
+        {/* Filter Bar + Random Spotlight */}
         <div className="tyrant-filters-bar reveal-on-scroll">
-          <div className="tyrant-filters">
-            {departments.map((dept) => (
+          <div className="apex-compact-filters">
+            {filterTabs.map((tab) => (
               <button
-                key={dept}
+                key={tab}
                 type="button"
-                className={`tyrant-filter-btn ${activeDept === dept ? 'active' : ''}`}
+                className={`apex-compact-filter-btn ${activeTab === tab ? 'active' : ''}`}
                 onClick={() => {
                   playClickSound()
-                  setActiveDept(dept)
-                  setPageOffset(0)
+                  setActiveTab(tab)
                 }}
                 onMouseEnter={playHoverSound}
               >
-                {dept}
+                {tab}
               </button>
             ))}
           </div>
@@ -105,76 +78,85 @@ export default function ManagementSection({ onOpenProfile }) {
           </button>
         </div>
 
-        {/* Slanted Parallelogram Legend Strip with 3D Minecraft Characters */}
-        <div className="apex-legends-strip-wrapper">
-          <div
-            key={`${activeDept}-${pageOffset}-${showAllGrid}`}
-            className={`apex-legends-strip ${showAllGrid ? 'apex-legends-strip--all' : ''}`}
-          >
-            {visibleSlantedList.map((person, idx) => (
-              <div
-                key={`${person.id}-${idx}`}
-                className="apex-legend-item tyrant-card--animated"
-                style={{
-                  '--stagger-index': idx,
-                  '--profile-accent': person.accent || '#dc2626',
-                }}
-                onClick={() => handleOpenStaff(person)}
-                onMouseEnter={playHoverSound}
-              >
-                {/* Slanted Parallelogram Portrait Box with Animated Cyber Backdrop & Minecraft Character */}
-                <div className="apex-legend-item__slant-frame">
-                  <div className="apex-legend-item__unskew">
-                    <div className="tyrant-animated-profile">
-                      <div className="tyrant-animated-profile__aura" />
-                      <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--outer" />
-                      <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--inner" />
-                      <div className="tyrant-animated-profile__scanline" />
-                      <div className="tyrant-animated-profile__particles">
-                        <span />
-                        <span />
-                        <span />
-                        <span />
+        {/* Structural Organization Hierarchy Tree: Founder -> Executive -> Admins -> Managers -> Directors */}
+        <div key={activeTab} className="apex-hierarchy-tree">
+          {visibleTiers.map((tier, tierIdx) => {
+            const members = management.filter((m) => m.department === tier.key)
+            return (
+              <div key={tier.key} className="apex-hierarchy-tier">
+                {/* Structural Org-Chart Tree Connector Between Tiers */}
+                {tierIdx > 0 && (
+                  <div className="apex-org-branch" aria-hidden="true">
+                    <span className="apex-org-branch__trunk" />
+                    <span className="apex-org-branch__diamond" />
+                    {tier.branchCount > 1 && (
+                      <div className={`apex-org-branch__bar apex-org-branch__bar--${tier.branchCount}`}>
+                        {Array.from({ length: tier.branchCount }).map((_, i) => (
+                          <span key={i} className="apex-org-branch__drop" />
+                        ))}
                       </div>
-                        <div className="tyrant-animated-profile__mc-wrap">
-                          <img
-                            src={person.image}
-                            alt={person.name}
-                            className="tyrant-animated-profile__mc-img"
-                            loading="lazy"
-                          />
-                        </div>
-                      </div>
-                    </div>
+                    )}
                   </div>
+                )}
 
-                  {/* Legend Name & Role Below Slanted Portrait */}
-                  <div className="apex-legend-item__caption">
-                    <div className="apex-legend-item__name-row">
-                      <span className="apex-legend-item__name">{person.name}</span>
-                      <span className="apex-legend-item__chevron">›</span>
-                    </div>
-                    <span className="apex-legend-item__role">{person.department}</span>
+                {/* Tier Header Badge */}
+                <div className="apex-hierarchy-tier__header">
+                  <span className="apex-hierarchy-tier__line" />
+                  <div className="apex-hierarchy-tier__badge">
+                    <span className="apex-hierarchy-tier__num">{tier.tierNum}</span>
+                    <span className="apex-hierarchy-tier__sep">//</span>
+                    <span className="apex-hierarchy-tier__title">{tier.label}</span>
+                    <span className="apex-hierarchy-tier__count">({members.length})</span>
                   </div>
+                  <span className="apex-hierarchy-tier__line" />
                 </div>
-            ))}
-              </div>
 
-          {/* Red "+" Next-Batch Button on the Right */ }
-          {!showAllGrid && filteredStaff.length > 6 && (
-              <button
-                type="button"
-                className="apex-legends-plus-btn"
-                onClick={handleNextPage}
-                onMouseEnter={playHoverSound}
-                title="Next Legends"
-                aria-label="Cycle Next Legends"
-              >
-                +
-              </button>
-            )}
-          </div>
+                {/* Structural Cards Row for This Tier */}
+                <div className={`apex-hierarchy-grid ${tier.cols}`}>
+                  {members.map((person, idx) => (
+                    <div
+                      key={person.id}
+                      className={`apex-profile-card apex-profile-card--${tier.key.toLowerCase()} tyrant-card--animated`}
+                      style={{ '--stagger-index': idx }}
+                      onClick={() => handleOpenStaff(person)}
+                      onMouseEnter={playHoverSound}
+                    >
+                      <span className="apex-profile-card__node-pin" aria-hidden="true" />
+
+                      {/* Top Rank Tag Inside Profile */}
+                      <div className="apex-profile-card__top">
+                        <span className="apex-profile-card__rank-code">
+                          {person.rankCode || tier.key}
+                        </span>
+                        <span className="apex-profile-card__dept-pill">{tier.label}</span>
+                      </div>
+
+                      {/* Front-View Unique Minecraft Character Inside Profile */}
+                      <div className="apex-profile-card__portrait">
+                        <div className="apex-profile-card__red-slash" />
+                        <img
+                          src={person.image}
+                          alt={person.name}
+                          className="apex-profile-card__avatar"
+                        />
+                      </div>
+
+                      {/* Bottom Name & Role Bar Inside Profile */}
+                      <div className="apex-profile-card__footer">
+                        <div className="apex-profile-card__name-row">
+                          <h3 className="apex-profile-card__name">{person.name}</h3>
+                          <span className="apex-profile-card__chevron">›</span>
+                        </div>
+                        <span className="apex-profile-card__role">{person.role}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
         </div>
+      </div>
     </section>
   )
 }

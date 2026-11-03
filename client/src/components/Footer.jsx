@@ -71,7 +71,7 @@ export default function Footer() {
             <div className="apex-footer__brand-col">
               <div className="apex-footer__logo-stack">
                 <span className="apex-footer__logo-main">EXILES</span>
-                <span className="apex-footer__logo-sub">— LEGENDS —</span>
+                <span className="apex-footer__logo-sub">— COMMUNITY —</span>
               </div>
 
               <div className="apex-footer__rating-box">
@@ -110,17 +110,17 @@ export default function Footer() {
               <div className="apex-footer__col">
                 <span className="apex-footer__col-title">COMMUNITY</span>
                 <a href="https://discord.gg/GcUsDxPdv8" target="_blank" rel="noreferrer" onClick={() => playClickSound('primary')} onMouseEnter={playHoverSound}>Discord</a>
-                <a href="#management" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Legends</a>
-                <a href="#inside" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Twitter / X</a>
-                <a href="#inside" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>YouTube</a>
+                <a href="#management" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Hierarchy</a>
+                <a href="#socials" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Twitter / X</a>
+                <a href="#socials" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>YouTube</a>
               </div>
 
               <div className="apex-footer__col">
                 <span className="apex-footer__col-title">ESPORTS</span>
                 <a href="#teams" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Divisions</a>
                 <a href="#management" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Leadership</a>
-                <a href="#inside" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Standings</a>
-                <a href="#inside" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>News</a>
+                <a href="#teams" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>Competitive Games</a>
+                <a href="#about" onClick={() => playClickSound()} onMouseEnter={playHoverSound}>About Exiles</a>
               </div>
             </div>
 
