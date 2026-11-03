@@ -42,13 +42,13 @@ function getBgmElement() {
     const canPlayWebm = Boolean(
       probe.canPlayType && probe.canPlayType('audio/webm; codecs="opus"').replace(/no/, '')
     )
-    bgmAudio = new Audio(canPlayWebm ? '/audio/1998phantom.webm' : '/audio/1998phantom.m4a')
+    bgmAudio = new Audio(canPlayWebm ? '/audio/exiles-bgm.webm' : '/audio/exiles-bgm.m4a')
     bgmAudio.loop = true
     bgmAudio.volume = 0.5
     bgmAudio.preload = 'auto'
     bgmAudio.addEventListener('error', () => {
       if (bgmAudio.src.endsWith('.webm')) {
-        bgmAudio.src = '/audio/1998phantom.m4a'
+        bgmAudio.src = '/audio/exiles-bgm.m4a'
       }
     })
     bgmAudio.addEventListener('play', () => {
