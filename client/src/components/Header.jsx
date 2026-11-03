@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { playClickSound, playHoverSound } from '../utils/soundEffects'
-import { GlobeIcon, UserIcon, DownloadIcon } from './Icons'
+import { GlobeIcon, UserIcon, RedirectIcon } from './Icons'
 
 const apexNavLinks = [
   { id: 'about', label: 'ABOUT' },
@@ -95,8 +95,8 @@ export default function Header() {
             onClick={() => playClickSound('primary')}
             onMouseEnter={playHoverSound}
           >
-            <span>JOIN EXILES FREE</span>
-            <DownloadIcon className="apex-svg-icon apex-svg-icon--sm" />
+            <span>JOIN EXILES NOW</span>
+            <RedirectIcon className="apex-svg-icon apex-svg-icon--sm" />
           </a>
         </div>
       </div>

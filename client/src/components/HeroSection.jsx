@@ -120,14 +120,14 @@ export default function HeroSection({ onMeetCreators, onExploreTeams }) {
             </div>
           </div>
 
-          {/* Bottom-Right Season / Division Callout Box */}
+          {/* Bottom-Right Exiles Organization Callout Box */}
           <div
             className="apex-hero__season-box"
             onClick={handleScrollToTeams}
             onMouseEnter={playHoverSound}
           >
-            <span className="apex-hero__season-tag">SEASON 2026</span>
-            <strong className="apex-hero__season-name">UPHEAVAL</strong>
+            <span className="apex-hero__season-tag">EST. 2025 • OFFICIAL CLAN</span>
+            <strong className="apex-hero__season-name">TEAM EXILES</strong>
             <span className="apex-hero__season-link">10 ACTIVE GAMES ›</span>
           </div>
         </div>
