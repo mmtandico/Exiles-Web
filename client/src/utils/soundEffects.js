@@ -44,7 +44,7 @@ function getBgmElement() {
     )
     bgmAudio = new Audio(canPlayWebm ? '/audio/1998phantom.webm' : '/audio/1998phantom.m4a')
     bgmAudio.loop = true
-    bgmAudio.volume = 0.35
+    bgmAudio.volume = 0.5
     bgmAudio.preload = 'auto'
     bgmAudio.addEventListener('error', () => {
       if (bgmAudio.src.endsWith('.webm')) {
