@@ -1,13 +1,6 @@
 import { useState, useEffect } from 'react'
-
-const navLinks = [
-  { id: 'creators', label: 'CREATORS' },
-  { id: 'management', label: 'MANAGEMENT' },
-  { id: 'teams', label: 'TEAMS' },
-  { id: 'shop', label: 'SHOP' },
-  { id: 'socials', label: 'SOCIALS' },
-  { id: 'about', label: 'ABOUT US' },
-]
+import { navLinks } from '../data/siteContent'
+import { playClickSound, playHoverSound } from '../utils/soundEffects'
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
@@ -23,6 +16,7 @@ export default function Header() {
 
   const handleNavClick = (e, id) => {
     e.preventDefault()
+    playClickSound('primary')
     setActiveSection(id)
     const el = document.getElementById(id)
     if (el) {
@@ -33,9 +27,21 @@ export default function Header() {
   return (
     <header className={`tyrant-header ${scrolled ? 'tyrant-header--scrolled' : ''}`}>
       <div className="tyrant-header__inner">
-        <a href="#hero" className="tyrant-header__logo" onClick={(e) => handleNavClick(e, 'hero')}>
-          EXILES
-        </a>
+        <div className="tyrant-header__brand-wrap">
+          <a
+            href="#hero"
+            className="tyrant-header__logo"
+            onClick={(e) => handleNavClick(e, 'hero')}
+            onMouseEnter={playHoverSound}
+          >
+            <img src="/Exiles-logo.png" alt="Exiles Logo" className="tyrant-header__logo-img" />
+            <span>EXILES</span>
+          </a>
+          <span className="tyrant-header__status-pill">
+            <span className="tyrant-header__status-dot" />
+            2026 PRO SEASON
+          </span>
+        </div>
 
         <nav className="tyrant-header__nav" aria-label="Main Navigation">
           {navLinks.map((item) => (
@@ -43,12 +49,24 @@ export default function Header() {
               key={item.id}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
+              onMouseEnter={playHoverSound}
               className={`tyrant-header__link ${activeSection === item.id ? 'active' : ''}`}
             >
               {item.label}
             </a>
           ))}
         </nav>
+
+        <a
+          href="https://discord.gg/GcUsDxPdv8"
+          target="_blank"
+          rel="noreferrer"
+          className="tyrant-btn tyrant-btn--header"
+          onClick={() => playClickSound('primary')}
+          onMouseEnter={playHoverSound}
+        >
+          JOIN ORG DISCORD
+        </a>
       </div>
     </header>
   )

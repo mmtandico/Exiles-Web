@@ -1,76 +1,25 @@
-import { useState, useRef } from 'react'
+import { useState } from 'react'
+import { isSfxMuted, setSfxMuted, playClickSound } from '../utils/soundEffects'
 
 export default function AudioToggle() {
-  const [isPlaying, setIsPlaying] = useState(false)
-  const audioCtxRef = useRef(null)
-  const oscNodesRef = useRef([])
+  const [sfxEnabled, setSfxEnabled] = useState(() => !isSfxMuted())
 
   const toggleSound = () => {
-    if (isPlaying) {
-      // Stop ambient drone
-      oscNodesRef.current.forEach((node) => {
-        try {
-          node.stop()
-          node.disconnect()
-        } catch {
-          // ignore
-        }
-      })
-      oscNodesRef.current = []
-      setIsPlaying(false)
-    } else {
-      // Start ambient synth pad with Web Audio API
-      try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext
-        if (!audioCtxRef.current) {
-          audioCtxRef.current = new AudioContext()
-        }
-        const ctx = audioCtxRef.current
-        if (ctx.state === 'suspended') {
-          ctx.resume()
-        }
-
-        // Sub drone
-        const osc1 = ctx.createOscillator()
-        const osc2 = ctx.createOscillator()
-        const gainNode = ctx.createGain()
-        const filter = ctx.createBiquadFilter()
-
-        osc1.type = 'sawtooth'
-        osc1.frequency.setValueAtTime(55, ctx.currentTime) // Low A
-        osc2.type = 'sine'
-        osc2.frequency.setValueAtTime(110.5, ctx.currentTime)
-
-        filter.type = 'lowpass'
-        filter.frequency.setValueAtTime(260, ctx.currentTime)
-
-        gainNode.gain.setValueAtTime(0.001, ctx.currentTime)
-        gainNode.gain.exponentialRampToValueAtTime(0.04, ctx.currentTime + 1.5)
-
-        osc1.connect(filter)
-        osc2.connect(filter)
-        filter.connect(gainNode)
-        gainNode.connect(ctx.destination)
-
-        osc1.start()
-        osc2.start()
-
-        oscNodesRef.current = [osc1, osc2, gainNode]
-        setIsPlaying(true)
-      } catch (err) {
-        console.warn('Audio play prevented', err)
-        setIsPlaying(false)
-      }
+    const nextEnabled = !sfxEnabled
+    setSfxMuted(!nextEnabled)
+    setSfxEnabled(nextEnabled)
+    if (nextEnabled) {
+      playClickSound('primary')
     }
   }
 
   return (
     <button
       type="button"
-      className={`tyrant-audio-toggle ${isPlaying ? 'tyrant-audio-toggle--playing' : ''}`}
+      className={`tyrant-audio-toggle ${sfxEnabled ? 'tyrant-audio-toggle--playing' : ''}`}
       onClick={toggleSound}
-      title={isPlaying ? 'Mute Atmosphere' : 'Play Atmosphere'}
-      aria-label="Toggle Atmosphere Audio"
+      title={sfxEnabled ? 'UI Sound Effects: ON (Click to Mute)' : 'UI Sound Effects: MUTED (Click to Enable)'}
+      aria-label="Toggle UI Sound Effects"
     >
       <svg
         className="tyrant-audio-toggle__icon"
@@ -81,7 +30,7 @@ export default function AudioToggle() {
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {isPlaying ? (
+        {sfxEnabled ? (
           <>
             <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" fill="currentColor" />
             <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />

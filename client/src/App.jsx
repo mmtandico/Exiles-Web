@@ -1,5 +1,5 @@
 import './App.css'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import LoadingScreen from './components/LoadingScreen'
 import Header from './components/Header'
 import HeroSection from './components/HeroSection'
@@ -15,62 +15,85 @@ import { teams } from './data/siteContent'
 
 let sessionEntered = false
 
-  function App() {
-    const [hasEntered, setHasEntered] = useState(() => sessionEntered)
-    const [selectedProfile, setSelectedProfile] = useState(null)
+function App() {
+  const [hasEntered, setHasEntered] = useState(() => sessionEntered)
+  const [selectedProfile, setSelectedProfile] = useState(null)
 
-    const handleEnter = () => {
-      sessionEntered = true
-      setHasEntered(true)
-    }
-
-    return (
-      <main className="tyrant-page">
-        {!hasEntered && <LoadingScreen onEnter={handleEnter} />}
-
-        <Header />
-
-        {/* Hero Section with Exiles Background & Statement */}
-        <HeroSection
-          onMeetCreators={() =>
-            document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' })
-          }
-        />
-
-        {/* 00 / ABOUT US - A CULTURE OF OUR OWN */}
-        <AboutSection
-          onMeetTeams={() =>
-            document.getElementById('teams')?.scrollIntoView({ behavior: 'smooth' })
-          }
-        />
-
-        {/* INSIDE EXILES Showcase Carousel */}
-        <InsideSection />
-
-        {/* 01 / THE CREATORS - OWN THE SPOTLIGHT */}
-        <CreatorsSection onOpenProfile={(profile) => setSelectedProfile(profile)} />
-
-        {/* 02 / THE PEOPLE - BEHIND EXILES */}
-        <ManagementSection onOpenProfile={(profile) => setSelectedProfile(profile)} />
-
-        {/* Competitive Lineups / Rosters */}
-        <TeamsSection teams={teams} />
-
-        {/* Footer & Socials */}
-        <Footer />
-
-        {/* Floating Sound Toggle Button (bottom-right) */}
-        <AudioToggle />
-
-        {/* Profile Detail Modal */}
-        {selectedProfile && (
-          <ProfileModal
-            profile={selectedProfile}
-            onClose={() => setSelectedProfile(null)}
-          />
-        )}
-      </main>
-    )
+  const handleEnter = () => {
+    sessionEntered = true
+    setHasEntered(true)
   }
 
-  export default App
+  // Scroll-reveal observer for smooth GUI entrance animations across all sections
+  useEffect(() => {
+    const elements = document.querySelectorAll('.reveal-on-scroll')
+    if (!elements.length) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible')
+          }
+        })
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    )
+
+    elements.forEach((el) => observer.observe(el))
+    return () => observer.disconnect()
+  }, [hasEntered])
+
+  return (
+    <main className="tyrant-page">
+      {!hasEntered && <LoadingScreen onEnter={handleEnter} />}
+
+      <Header />
+
+      {/* Hero Section with Rotating Exiles Background, Telemetry & Statement */}
+      <HeroSection
+        onMeetCreators={() =>
+          document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' })
+        }
+        onExploreTeams={() =>
+          document.getElementById('teams')?.scrollIntoView({ behavior: 'smooth' })
+        }
+      />
+
+      {/* Competitive Lineups / Rosters */}
+      <TeamsSection teams={teams} />
+
+      {/* 01 / TOURNAMENT & LAN ARCHIVES */}
+      <InsideSection />
+
+      {/* 02 / PLAYERS & TALENT - THE FRONTLINE ROSTER */}
+      <CreatorsSection onOpenProfile={(profile) => setSelectedProfile(profile)} />
+
+      {/* 03 / COMMAND & COACHING STAFF */}
+      <ManagementSection onOpenProfile={(profile) => setSelectedProfile(profile)} />
+
+      {/* 00 / THE ORGANIZATION - ENGINEERED FOR CHAMPIONSHIPS */}
+      <AboutSection
+        onMeetTeams={() =>
+          document.getElementById('teams')?.scrollIntoView({ behavior: 'smooth' })
+        }
+      />
+
+      {/* Footer & Socials */}
+      <Footer />
+
+      {/* Floating Sound Toggle Button (bottom-right) */}
+      <AudioToggle />
+
+      {/* Profile Detail Modal */}
+      {selectedProfile && (
+        <ProfileModal
+          profile={selectedProfile}
+          onClose={() => setSelectedProfile(null)}
+        />
+      )}
+    </main>
+  )
+}
+
+export default App

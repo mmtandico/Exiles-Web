@@ -1,5 +1,8 @@
+import { playClickSound, playHoverSound } from '../utils/soundEffects'
+
 export default function AboutSection({ onMeetTeams }) {
   const handleScrollToTeams = () => {
+    playClickSound('primary')
     if (onMeetTeams) {
       onMeetTeams()
       return
@@ -12,60 +15,59 @@ export default function AboutSection({ onMeetTeams }) {
     <section id="about" className="tyrant-section tyrant-about">
       <div className="tyrant-container tyrant-about__grid">
         {/* Left Column */}
-        <div className="tyrant-about__left">
-          <div className="tyrant-section-tag">00 / ABOUT US</div>
+        <div className="tyrant-about__left reveal-on-scroll">
+          <div className="tyrant-section-tag">00 / THE ORGANIZATION</div>
           <h2 className="tyrant-about__heading">
-            A CULTURE
+            ENGINEERED FOR
             <br />
-            OF OUR OWN.
+            <span className="tyrant-text-accent">CHAMPIONSHIPS.</span>
           </h2>
           <p className="tyrant-about__intro">
-            We are Exiles. A Philippine esports and entertainment organization built on competitive
-            ambition, creative expression, and a distinct identity.
+            Exiles Esports is a premier competitive team organization forged in the Philippines.
+            We recruit top-tier mechanical talent, build structured coaching systems, and compete
+            to win every trophy on the regional and international stage.
           </p>
           <button
             type="button"
             className="tyrant-btn tyrant-btn--primary"
             onClick={handleScrollToTeams}
+            onMouseEnter={playHoverSound}
           >
-            MEET THE TEAMS
+            EXPLORE ACTIVE DIVISIONS
           </button>
         </div>
 
         {/* Right Column */}
         <div className="tyrant-about__right">
-          <div className="tyrant-about__block">
-            <h3 className="tyrant-about__block-title">OUR BEGINNINGS</h3>
+          <div className="tyrant-about__block reveal-on-scroll" style={{ '--stagger-index': 0 }}>
+            <h3 className="tyrant-about__block-title">01 // COMPETITIVE PEDIGREE</h3>
             <p className="tyrant-about__block-text">
-              Founded in 2025, Exiles grew from a competitive team into an organization spanning
-              esports, content, creators, apparel, and live experiences. We have carried the same
-              drive into everything we build: earn our place, push our standards, and keep moving forward.
+              Founded in 2025 as a dominant championship squad, Exiles rapidly evolved into a
+              multi-division esports powerhouse. Every roster under our banner operates with one
+              directive: set the standard in server discipline, tactical depth, and tournament results.
             </p>
           </div>
 
-          <div className="tyrant-about__block">
-            <h3 className="tyrant-about__block-title">WHAT WE BUILD</h3>
+          <div className="tyrant-about__block reveal-on-scroll" style={{ '--stagger-index': 1 }}>
+            <h3 className="tyrant-about__block-title">02 // HIGH-PERFORMANCE INFRASTRUCTURE</h3>
             <p className="tyrant-about__block-text">
-              Today, we're bringing that ambition into entertainment. We help creators develop their
-              presence, grow their communities, and turn their talent into lasting opportunities. We give
-              aspiring players a platform to prove themselves and pursue a future in esports. Through our
-              events and community initiatives, we create opportunities for people to compete, connect,
-              and be discovered.
+              Winning championships requires more than raw aim. We equip our divisions with dedicated
+              analysts, structured scrimmage blocks, VOD telemetry, and sports performance staff so
+              our competitors peak when the lights are brightest.
             </p>
           </div>
 
-          <div className="tyrant-about__block">
-            <h3 className="tyrant-about__block-title">OUR IDENTITY</h3>
+          <div className="tyrant-about__block reveal-on-scroll" style={{ '--stagger-index': 2 }}>
+            <h3 className="tyrant-about__block-title">03 // CHAMPIONSHIP DNA</h3>
             <p className="tyrant-about__block-text">
-              Our identity runs through every part of Exiles, from the content we produce and the apparel
-              we design to the experiences we create. We take pride in the details and put in the work
-              behind them. Every player, creator, and creative brings an individual voice, united by a
-              shared commitment to building something we're proud to put our name on.
+              From our flagship pro rosters to our competitive content creators and academy prospects,
+              every member of Exiles wears the crest with pride. We play fearless, adapt faster than
+              the meta, and rise above the rest.
             </p>
           </div>
 
-          <div className="tyrant-about__slogan">
-            We rise above the rest.
+          <div className="tyrant-about__slogan reveal-on-scroll" style={{ '--stagger-index': 3 }}>
+            // ONE BANNER. ONE OBJECTIVE. VICTORY.
           </div>
         </div>
       </div>
