@@ -126,7 +126,7 @@ export default function ManagementSection({ onOpenProfile }) {
                       {/* Top Rank Tag Inside Profile */}
                       <div className="apex-profile-card__top">
                         <span className="apex-profile-card__rank-code">
-                          {person.rankCode || tier.key}
+                          {person.mcIgn ? `IGN: ${person.mcIgn}` : person.rankCode || tier.key}
                         </span>
                         <span className="apex-profile-card__dept-pill">{tier.label}</span>
                       </div>
