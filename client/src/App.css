@@ -1413,8 +1413,11 @@ body {
   position: fixed;
   bottom: 26px;
   right: 26px;
+  bottom: 24px;
+  right: 24px;
   width: 48px;
   height: 48px;
+  padding: 0;
   border-radius: 50%;
   background: rgba(14, 14, 18, 0.88);
   bottom: 24px;
@@ -1431,22 +1434,32 @@ body {
   border: 1.5px solid #dc2626;
   color: #ef4444;
   display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: center;
   gap: 0.55rem;
   cursor: pointer;
   z-index: 9999;
   box-shadow: 0 0 16px rgba(255, 55, 0, 0.35);
+  outline: none;
   box-shadow: 0 0 16px rgba(220, 38, 38, 0.35);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 .tyrant-audio-toggle:hover {
   transform: scale(1.1);
   box-shadow: 0 0 25px rgba(255, 55, 0, 0.65);
   transform: translateY(-2px) scale(1.04);
+  transform: scale(1.08);
   box-shadow: 0 0 24px rgba(220, 38, 38, 0.65);
   border-color: #ef4444;
+  color: #ffffff;
+}
+
+.tyrant-audio-toggle:focus,
+.tyrant-audio-toggle:focus-visible {
+  outline: none;
 }
 
 .tyrant-audio-toggle--playing {
@@ -1472,6 +1485,7 @@ body {
   height: 22px;
   width: 18px;
   height: 18px;
+  display: block;
   flex-shrink: 0;
 }
 
@@ -5075,4 +5089,903 @@ body {
   background: #ef4444;
   box-shadow: 0 0 10px #dc2626;
   z-index: 4;
+}
+
+/* ==========================================================================
+   MULTI-DEVICE RESPONSIVE DESIGN SYSTEM (DESKTOP / LAPTOP / TABLET / MOBILE)
+   ========================================================================== */
+
+/* Mobile/Tablet Hamburger Button (Hidden on Desktop) */
+.apex-header__menu-btn {
+  display: none;
+  background: rgba(220, 38, 38, 0.14);
+  border: 1px solid rgba(220, 38, 38, 0.55);
+  border-radius: 6px;
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.apex-header__menu-btn:hover {
+  background: #dc2626;
+  border-color: #ef4444;
+}
+
+/* Mobile Slide-Down Navigation Drawer */
+.apex-mobile-drawer {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: rgba(8, 8, 12, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 2px solid #dc2626;
+  padding: 1rem 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+  z-index: 999;
+  animation: drawerSlideDown 0.22s ease-out;
+}
+
+@keyframes drawerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.apex-mobile-drawer__links {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.apex-mobile-drawer__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-gaming);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #e5e7eb;
+  text-decoration: none;
+  background: rgba(16, 16, 22, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.apex-mobile-drawer__link:last-child {
+  border-bottom: none;
+}
+
+.apex-mobile-drawer__link.active,
+.apex-mobile-drawer__link:hover {
+  background: rgba(220, 38, 38, 0.18);
+  color: #ffffff;
+  border-left: 3px solid #dc2626;
+}
+
+.apex-mobile-drawer__arrow {
+  color: #ef4444;
+  font-weight: 900;
+}
+
+.apex-mobile-drawer__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: #ffffff;
+  font-family: var(--font-gaming);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+}
+
+/* 1. LAPTOP & TABLET LANDSCAPE (<= 1150px) */
+@media (max-width: 1150px) {
+  .apex-header__inner {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1.25rem;
+  }
+
+  .apex-header__nav {
+    display: none;
+  }
+
+  .apex-header__menu-btn {
+    display: inline-flex;
+  }
+
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: repeat(3, minmax(200px, 260px));
+  }
+
+  .apex-org-branch__bar--6 {
+    width: min(560px, 72%);
+  }
+
+  .apex-org-branch__bar--6 .apex-org-branch__drop:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+/* 2. TABLET PORTRAIT (<= 860px) */
+@media (max-width: 860px) {
+  .tyrant-container {
+    padding: 0 1.25rem;
+  }
+
+  .apex-hero__stage {
+    min-height: 520px;
+  }
+
+  .apex-hero__red-slash {
+    background: linear-gradient(135deg,
+        rgba(185, 28, 28, 0.9) 0%,
+        rgba(127, 29, 29, 0.65) 55%,
+        rgba(10, 10, 14, 0.85) 100%);
+  }
+
+  .apex-hero__content-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .apex-hero__left {
+    max-width: 100%;
+  }
+
+  .apex-hero__season-box {
+    align-self: stretch;
+    clip-path: none;
+    border-radius: 6px;
+  }
+
+  .apex-hierarchy-grid.tier-grid--3,
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: repeat(2, minmax(180px, 260px));
+  }
+
+  .apex-org-branch__bar {
+    display: none;
+  }
+
+  .apex-section-header__left {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tyrant-filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tyrant-btn--random-profile {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Responsive Profile Dossier Modal */
+  .tyrant-modal-overlay {
+    padding: 0.85rem;
+  }
+
+  .tyrant-modal-box {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .tyrant-modal-content {
+    grid-template-columns: 1fr;
+  }
+
+  .tyrant-modal-image-col {
+    min-height: 230px;
+  }
+
+  .apex-modal-portrait {
+    min-height: 230px;
+    padding: 1.25rem;
+  }
+
+  .apex-modal-portrait__avatar {
+    max-height: 190px;
+  }
+
+  .tyrant-modal-info-col {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .tyrant-modal-name {
+    font-size: 1.75rem;
+  }
+}
+
+/* 3. MOBILE PHONES (<= 640px) */
+@media (max-width: 640px) {
+  .tyrant-container {
+    padding: 0 1rem;
+  }
+
+  .apex-header__inner {
+    padding-left: 0.85rem;
+  }
+
+  .apex-header__logo-frame {
+    width: 36px;
+    height: 36px;
+  }
+
+  .apex-header__logo-main {
+    font-size: 1.22rem;
+  }
+
+  .apex-header__logo-sub {
+    font-size: 0.45rem;
+  }
+
+  .apex-header__util-btn,
+  .apex-header__login-link,
+  .apex-header__download-cta {
+    display: none;
+  }
+
+  .apex-header__menu-btn {
+    margin-right: 0.85rem;
+  }
+
+  .apex-hero__giant-main {
+    font-size: clamp(3rem, 15vw, 4.4rem);
+  }
+
+  .apex-hero__giant-sub {
+    font-size: 1.15rem;
+    letter-spacing: 0.18em;
+  }
+
+  .apex-hero__headline {
+    font-size: 1.65rem;
+  }
+
+  .apex-hero__desc {
+    font-size: 0.94rem;
+  }
+
+  .apex-hero__cta-row {
+    width: 100%;
+  }
+
+  .apex-hero__cta-row .apex-btn {
+    flex: 1 1 calc(50% - 0.5rem);
+    justify-content: center;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .apex-platforms-bar {
+    min-height: 56px;
+  }
+
+  .apex-platforms-bar__tag {
+    padding: 0.4rem 1.35rem 0.4rem 0.85rem;
+    font-size: 0.68rem;
+  }
+
+  .apex-platforms-bar__list {
+    justify-content: flex-start;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .apex-pillars-section,
+  .apex-legends-section,
+  .apex-games-section {
+    padding: 2.5rem 0;
+  }
+
+  .apex-section-header__title {
+    font-size: 1.55rem;
+  }
+
+  .apex-section-header__red-bar {
+    display: none;
+  }
+
+  .apex-compact-filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+  }
+
+  .apex-compact-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .apex-compact-filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* 2-Column Compact Roster Cards on Phones */
+  .apex-hierarchy-grid.tier-grid--1 {
+    grid-template-columns: minmax(200px, 260px);
+  }
+
+  .apex-hierarchy-grid.tier-grid--2,
+  .apex-hierarchy-grid.tier-grid--3,
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .apex-profile-card__portrait {
+    height: 145px;
+  }
+
+  .apex-profile-card__name {
+    font-size: 0.98rem;
+  }
+
+  .apex-profile-card__role {
+    font-size: 0.56rem;
+  }
+
+  .apex-compact-games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .apex-compact-game-card {
+    padding: 0.8rem;
+  }
+
+  .apex-compact-game-card__name {
+    font-size: 0.92rem;
+  }
+
+  .apex-newsletter-bar__form {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .apex-newsletter-bar__input {
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+  }
+
+  .apex-newsletter-bar__btn {
+    padding: 0.8rem 1.25rem;
+    justify-content: center;
+    border-radius: 4px;
+  }
+
+  .apex-footer__brand-col {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .apex-footer__links-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .apex-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .apex-footer__studio-badge {
+    align-items: flex-start;
+  }
+
+  .tyrant-audio-toggle {
+    bottom: 16px;
+    right: 16px;
+    height: 40px;
+    padding: 0 0.85rem;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+  }
+}
+
+/* 4. SMALL PHONES (<= 400px) */
+@media (max-width: 400px) {
+  .apex-hero__cta-row {
+    flex-direction: column;
+  }
+
+  .apex-hero__cta-row .apex-btn {
+    width: 100%;
+  }
+
+  .apex-compact-games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apex-hierarchy-grid.tier-grid--2,
+  .apex-hierarchy-grid.tier-grid--3,
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ==========================================================================
+   MULTI-DEVICE RESPONSIVE DESIGN SYSTEM (DESKTOP / LAPTOP / TABLET / MOBILE)
+   ========================================================================== */
+
+/* Mobile/Tablet Hamburger Button (Hidden on Desktop) */
+.apex-header__menu-btn {
+  display: none;
+  background: rgba(220, 38, 38, 0.14);
+  border: 1px solid rgba(220, 38, 38, 0.55);
+  border-radius: 6px;
+  color: #ffffff;
+  width: 40px;
+  height: 40px;
+  margin-right: 1rem;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.apex-header__menu-btn:hover {
+  background: #dc2626;
+  border-color: #ef4444;
+}
+
+/* Mobile Slide-Down Navigation Drawer */
+.apex-mobile-drawer {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  background: rgba(8, 8, 12, 0.98);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 2px solid #dc2626;
+  padding: 1rem 1.25rem 1.35rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.9);
+  z-index: 999;
+  animation: drawerSlideDown 0.22s ease-out;
+}
+
+@keyframes drawerSlideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.apex-mobile-drawer__links {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.apex-mobile-drawer__link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 1rem;
+  font-family: var(--font-gaming);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #e5e7eb;
+  text-decoration: none;
+  background: rgba(16, 16, 22, 0.85);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.apex-mobile-drawer__link:last-child {
+  border-bottom: none;
+}
+
+.apex-mobile-drawer__link.active,
+.apex-mobile-drawer__link:hover {
+  background: rgba(220, 38, 38, 0.18);
+  color: #ffffff;
+  border-left: 3px solid #dc2626;
+}
+
+.apex-mobile-drawer__arrow {
+  color: #ef4444;
+  font-weight: 900;
+}
+
+.apex-mobile-drawer__cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  background: linear-gradient(135deg, #dc2626, #b91c1c);
+  color: #ffffff;
+  font-family: var(--font-gaming);
+  font-size: 1rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  padding: 0.85rem 1.25rem;
+  border-radius: 6px;
+  text-decoration: none;
+  box-shadow: 0 6px 20px rgba(220, 38, 38, 0.4);
+}
+
+/* 1. LAPTOP & TABLET LANDSCAPE (<= 1150px) */
+@media (max-width: 1150px) {
+  .apex-header__inner {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 1.25rem;
+  }
+
+  .apex-header__nav {
+    display: none;
+  }
+
+  .apex-header__menu-btn {
+    display: inline-flex;
+  }
+
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: repeat(3, minmax(200px, 260px));
+  }
+
+  .apex-org-branch__bar--6 {
+    width: min(560px, 72%);
+  }
+
+  .apex-org-branch__bar--6 .apex-org-branch__drop:nth-child(n + 4) {
+    display: none;
+  }
+}
+
+/* 2. TABLET PORTRAIT (<= 860px) */
+@media (max-width: 860px) {
+  .tyrant-container {
+    padding: 0 1.25rem;
+  }
+
+  .apex-hero__stage {
+    min-height: 520px;
+  }
+
+  .apex-hero__red-slash {
+    background: linear-gradient(135deg,
+        rgba(185, 28, 28, 0.9) 0%,
+        rgba(127, 29, 29, 0.65) 55%,
+        rgba(10, 10, 14, 0.85) 100%);
+  }
+
+  .apex-hero__content-wrap {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding-top: 2.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .apex-hero__left {
+    max-width: 100%;
+  }
+
+  .apex-hero__season-box {
+    align-self: stretch;
+    clip-path: none;
+    border-radius: 6px;
+  }
+
+  .apex-hierarchy-grid.tier-grid--3,
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: repeat(2, minmax(180px, 260px));
+  }
+
+  .apex-org-branch__bar {
+    display: none;
+  }
+
+  .apex-section-header__left {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tyrant-filters-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .tyrant-btn--random-profile {
+    width: 100%;
+    justify-content: center;
+  }
+
+  /* Responsive Profile Dossier Modal */
+  .tyrant-modal-overlay {
+    padding: 0.85rem;
+  }
+
+  .tyrant-modal-box {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .tyrant-modal-content {
+    grid-template-columns: 1fr;
+  }
+
+  .tyrant-modal-image-col {
+    min-height: 230px;
+  }
+
+  .apex-modal-portrait {
+    min-height: 230px;
+    padding: 1.25rem;
+  }
+
+  .apex-modal-portrait__avatar {
+    max-height: 190px;
+  }
+
+  .tyrant-modal-info-col {
+    padding: 1.5rem 1.25rem;
+  }
+
+  .tyrant-modal-name {
+    font-size: 1.75rem;
+  }
+}
+
+/* 3. MOBILE PHONES (<= 640px) */
+@media (max-width: 640px) {
+  .tyrant-container {
+    padding: 0 1rem;
+  }
+
+  .apex-header__inner {
+    padding-left: 0.85rem;
+  }
+
+  .apex-header__logo-frame {
+    width: 36px;
+    height: 36px;
+  }
+
+  .apex-header__logo-main {
+    font-size: 1.22rem;
+  }
+
+  .apex-header__logo-sub {
+    font-size: 0.45rem;
+  }
+
+  .apex-header__util-btn,
+  .apex-header__login-link,
+  .apex-header__download-cta {
+    display: none;
+  }
+
+  .apex-header__menu-btn {
+    margin-right: 0.85rem;
+  }
+
+  .apex-hero__giant-main {
+    font-size: clamp(3rem, 15vw, 4.4rem);
+  }
+
+  .apex-hero__giant-sub {
+    font-size: 1.15rem;
+    letter-spacing: 0.18em;
+  }
+
+  .apex-hero__headline {
+    font-size: 1.65rem;
+  }
+
+  .apex-hero__desc {
+    font-size: 0.94rem;
+  }
+
+  .apex-hero__cta-row {
+    width: 100%;
+  }
+
+  .apex-hero__cta-row .apex-btn {
+    flex: 1 1 calc(50% - 0.5rem);
+    justify-content: center;
+    padding: 0.8rem 1rem;
+    font-size: 0.9rem;
+  }
+
+  .apex-platforms-bar {
+    min-height: 56px;
+  }
+
+  .apex-platforms-bar__tag {
+    padding: 0.4rem 1.35rem 0.4rem 0.85rem;
+    font-size: 0.68rem;
+  }
+
+  .apex-platforms-bar__list {
+    justify-content: flex-start;
+    padding: 0.4rem 0.75rem;
+  }
+
+  .apex-pillars-section,
+  .apex-legends-section,
+  .apex-games-section {
+    padding: 2.5rem 0;
+  }
+
+  .apex-section-header__title {
+    font-size: 1.55rem;
+  }
+
+  .apex-section-header__red-bar {
+    display: none;
+  }
+
+  .apex-compact-filters {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
+  }
+
+  .apex-compact-filters::-webkit-scrollbar {
+    display: none;
+  }
+
+  .apex-compact-filter-btn {
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* 2-Column Compact Roster Cards on Phones */
+  .apex-hierarchy-grid.tier-grid--1 {
+    grid-template-columns: minmax(200px, 260px);
+  }
+
+  .apex-hierarchy-grid.tier-grid--2,
+  .apex-hierarchy-grid.tier-grid--3,
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .apex-profile-card__portrait {
+    height: 145px;
+  }
+
+  .apex-profile-card__name {
+    font-size: 0.98rem;
+  }
+
+  .apex-profile-card__role {
+    font-size: 0.56rem;
+  }
+
+  .apex-compact-games-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.65rem;
+  }
+
+  .apex-compact-game-card {
+    padding: 0.8rem;
+  }
+
+  .apex-compact-game-card__name {
+    font-size: 0.92rem;
+  }
+
+  .apex-newsletter-bar__form {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  .apex-newsletter-bar__input {
+    border-right: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 4px;
+  }
+
+  .apex-newsletter-bar__btn {
+    padding: 0.8rem 1.25rem;
+    justify-content: center;
+    border-radius: 4px;
+  }
+
+  .apex-footer__brand-col {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .apex-footer__links-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    width: 100%;
+  }
+
+  .apex-footer__bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .apex-footer__studio-badge {
+    align-items: flex-start;
+  }
+
+  .tyrant-audio-toggle {
+    bottom: 16px;
+    right: 16px;
+    height: 40px;
+    padding: 0 0.85rem;
+  }
+}
+
+/* 4. SMALL PHONES (<= 400px) */
+@media (max-width: 400px) {
+  .apex-hero__cta-row {
+    flex-direction: column;
+  }
+
+  .apex-hero__cta-row .apex-btn {
+    width: 100%;
+  }
+
+  .apex-compact-games-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .apex-hierarchy-grid.tier-grid--2,
+  .apex-hierarchy-grid.tier-grid--3,
+  .apex-hierarchy-grid.tier-grid--6 {
+    grid-template-columns: 1fr;
+  }
 }
