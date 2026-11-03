@@ -1,10 +1,19 @@
 import { useState, useEffect } from 'react'
-import { navLinks } from '../data/siteContent'
 import { playClickSound, playHoverSound } from '../utils/soundEffects'
+import { GlobeIcon, UserIcon, DownloadIcon } from './Icons'
+
+const apexNavLinks = [
+  { id: 'about', label: 'ABOUT' },
+  { id: 'management', label: 'LEGENDS' },
+  { id: 'teams', label: 'GAMES' },
+  { id: 'inside', label: 'NEWS' },
+  { id: 'teams', label: 'ESPORTS', key: 'esports' },
+  { id: 'socials', label: 'COMMUNITY' },
+]
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false)
-  const [activeSection, setActiveSection] = useState('')
+  const [activeSection, setActiveSection] = useState('about')
 
   useEffect(() => {
     const handleScroll = () => {
@@ -25,48 +34,72 @@ export default function Header() {
   }
 
   return (
-    <header className={`tyrant-header ${scrolled ? 'tyrant-header--scrolled' : ''}`}>
-      <div className="tyrant-header__inner">
-        <div className="tyrant-header__brand-wrap">
-          <a
-            href="#hero"
-            className="tyrant-header__logo"
-            onClick={(e) => handleNavClick(e, 'hero')}
-            onMouseEnter={playHoverSound}
-          >
-            <img src="/Exiles-logo.png" alt="Exiles Logo" className="tyrant-header__logo-img" />
-            <span>EXILES</span>
-          </a>
-          <span className="tyrant-header__status-pill">
-            <span className="tyrant-header__status-dot" />
-            2026 PRO SEASON
+    <header className={`apex-header ${scrolled ? 'apex-header--scrolled' : ''}`}>
+      <div className="apex-header__inner">
+        {/* Left Brand Block */}
+        <a
+          href="#hero"
+          className="apex-header__brand"
+          onClick={(e) => handleNavClick(e, 'hero')}
+          onMouseEnter={playHoverSound}
+        >
+          <span className="apex-header__emblem-box">
+            <img src="/Exiles-logo.png" alt="Exiles" className="apex-header__emblem-img" />
           </span>
-        </div>
+          <span className="apex-header__logo-stack">
+            <span className="apex-header__logo-main">EXILES</span>
+            <span className="apex-header__logo-sub">— ESPORTS —</span>
+          </span>
+        </a>
 
-        <nav className="tyrant-header__nav" aria-label="Main Navigation">
-          {navLinks.map((item) => (
+        {/* Center Nav Links */}
+        <nav className="apex-header__nav" aria-label="Main Navigation">
+          {apexNavLinks.map((item) => (
             <a
-              key={item.id}
+              key={item.key || item.label}
               href={`#${item.id}`}
               onClick={(e) => handleNavClick(e, item.id)}
               onMouseEnter={playHoverSound}
-              className={`tyrant-header__link ${activeSection === item.id ? 'active' : ''}`}
+              className={`apex-header__link ${activeSection === item.id ? 'active' : ''}`}
             >
               {item.label}
             </a>
           ))}
         </nav>
 
-        <a
-          href="https://discord.gg/GcUsDxPdv8"
-          target="_blank"
-          rel="noreferrer"
-          className="tyrant-btn tyrant-btn--header"
-          onClick={() => playClickSound('primary')}
-          onMouseEnter={playHoverSound}
-        >
-          JOIN ORG DISCORD
-        </a>
+        {/* Right Utility & Full-Height Red CTA */}
+        <div className="apex-header__right">
+          <button
+            type="button"
+            className="apex-header__util-btn"
+            onClick={() => playClickSound()}
+            onMouseEnter={playHoverSound}
+            title="Region: SEA / PH"
+            aria-label="Select Region"
+          >
+            <GlobeIcon className="apex-svg-icon apex-svg-icon--sm" />
+          </button>
+          <a
+            href="#management"
+            className="apex-header__login-link"
+            onClick={(e) => handleNavClick(e, 'management')}
+            onMouseEnter={playHoverSound}
+          >
+            <UserIcon className="apex-svg-icon apex-svg-icon--sm" />
+            <span>LEGENDS</span>
+          </a>
+          <a
+            href="https://discord.gg/GcUsDxPdv8"
+            target="_blank"
+            rel="noreferrer"
+            className="apex-header__download-cta"
+            onClick={() => playClickSound('primary')}
+            onMouseEnter={playHoverSound}
+          >
+            <span>JOIN EXILES FREE</span>
+            <DownloadIcon className="apex-svg-icon apex-svg-icon--sm" />
+          </a>
+        </div>
       </div>
     </header>
   )

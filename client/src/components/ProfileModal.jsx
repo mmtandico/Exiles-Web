@@ -14,7 +14,7 @@ export default function ProfileModal({ profile, onClose }) {
     <div className="tyrant-modal-overlay" onClick={handleClose} role="dialog" aria-modal="true">
       <div
         className="tyrant-modal-box"
-        style={{ '--profile-accent': profile.accent || '#ff3700' }}
+        style={{ '--profile-accent': profile.accent || '#dc2626' }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
@@ -24,7 +24,10 @@ export default function ProfileModal({ profile, onClose }) {
           onMouseEnter={playHoverSound}
           aria-label="Close Profile"
         >
-          ✕
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" />
+            <line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
         </button>
 
         <div className="tyrant-modal-content">
@@ -41,11 +44,11 @@ export default function ProfileModal({ profile, onClose }) {
                   <span />
                   <span />
                 </div>
-                <div className="tyrant-animated-profile__avatar-frame">
+                <div className="tyrant-animated-profile__mc-wrap tyrant-animated-profile__mc-wrap--modal">
                   <img
                     src={profile.image}
                     alt={profile.name}
-                    className="tyrant-animated-profile__avatar-img"
+                    className="tyrant-animated-profile__mc-img"
                   />
                 </div>
               </div>
@@ -97,16 +100,16 @@ export default function ProfileModal({ profile, onClose }) {
 
             <button
               type="button"
-              className="tyrant-btn tyrant-btn--primary"
+              className="apex-btn apex-btn--red"
               style={{ marginTop: '1.5rem', width: 'fit-content' }}
               onClick={handleClose}
               onMouseEnter={playHoverSound}
             >
-              CLOSE DOSSIER
+              <span>CLOSE DOSSIER</span>
             </button>
           </div>
         </div>
+        </div>
       </div>
-    </div>
-  )
+      )
 }

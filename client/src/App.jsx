@@ -5,7 +5,6 @@ import Header from './components/Header'
 import HeroSection from './components/HeroSection'
 import AboutSection from './components/AboutSection'
 import InsideSection from './components/InsideSection'
-import CreatorsSection from './components/CreatorsSection'
 import ManagementSection from './components/ManagementSection'
 import TeamsSection from './components/TeamsSection'
 import Footer from './components/Footer'
@@ -24,7 +23,6 @@ function App() {
     setHasEntered(true)
   }
 
-  // Scroll-reveal observer for smooth GUI entrance animations across all sections
   useEffect(() => {
     const elements = document.querySelectorAll('.reveal-on-scroll')
     if (!elements.length) return
@@ -45,41 +43,35 @@ function App() {
   }, [hasEntered])
 
   return (
-    <main className="tyrant-page">
+    <main className="tyrant-page apex-layout">
       {!hasEntered && <LoadingScreen onEnter={handleEnter} />}
 
+      {/* 1. Top Esports Header with Full-Height Red CTA */}
       <Header />
 
-      {/* Hero Section with Rotating Exiles Background, Telemetry & Statement */}
+      {/* 2. Diagonal Crimson & Exiles Background Hero + 10-Games Ribbon Bar */}
       <HeroSection
         onMeetCreators={() =>
-          document.getElementById('creators')?.scrollIntoView({ behavior: 'smooth' })
+          document.getElementById('management')?.scrollIntoView({ behavior: 'smooth' })
         }
         onExploreTeams={() =>
           document.getElementById('teams')?.scrollIntoView({ behavior: 'smooth' })
         }
       />
 
-      {/* Competitive Lineups / Rosters */}
-      <TeamsSection teams={teams} />
+      {/* 3. 4-Column Tactical Feature Cards (DROP IN / GEAR UP / SQUAD UP / BE THE LAST) */}
+      <AboutSection />
 
-      {/* 01 / TOURNAMENT & LAN ARCHIVES */}
-      <InsideSection />
-
-      {/* 02 / PLAYERS & TALENT - THE FRONTLINE ROSTER */}
-      <CreatorsSection onOpenProfile={(profile) => setSelectedProfile(profile)} />
-
-      {/* 03 / COMMAND & COACHING STAFF */}
+      {/* 4. "CHOOSE YOUR LEGEND" Slanted Parallelogram Roster (19 Team Exiles Community Minecraft Characters) */}
       <ManagementSection onOpenProfile={(profile) => setSelectedProfile(profile)} />
 
-      {/* 00 / THE ORGANIZATION - ENGINEERED FOR CHAMPIONSHIPS */}
-      <AboutSection
-        onMeetTeams={() =>
-          document.getElementById('teams')?.scrollIntoView({ behavior: 'smooth' })
-        }
-      />
+      {/* 5. 10 Competitive Games & Divisions */}
+      <TeamsSection teams={teams} />
 
-      {/* Footer & Socials */}
+      {/* 6. "LATEST NEWS" 4-Column News Row */}
+      <InsideSection />
+
+      {/* 7. "STAY UP TO DATE" Subscribe Banner + Esports Multi-Column Footer */}
       <Footer />
 
       {/* Floating Sound Toggle Button (bottom-right) */}

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
-import { orgStats } from '../data/siteContent'
+import { teams } from '../data/siteContent'
 import { playClickSound, playHoverSound } from '../utils/soundEffects'
+import { PlayIcon, CrossedSwordsIcon, GameSvgIcon } from './Icons'
 
 const backgrounds = [
   '/bg/Exiles-bg1.png',
@@ -20,14 +21,14 @@ export default function HeroSection({ onMeetCreators, onExploreTeams }) {
     return () => clearInterval(id)
   }, [])
 
-  const handleScrollToCreators = () => {
+  const handleScrollToLegends = () => {
     playClickSound('primary')
-    if (onMeetCreators) {
-      onMeetCreators()
+    const el = document.getElementById('management')
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' })
       return
     }
-    const el = document.getElementById('creators')
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+    if (onMeetCreators) onMeetCreators()
   }
 
   const handleScrollToTeams = () => {
@@ -41,103 +42,118 @@ export default function HeroSection({ onMeetCreators, onExploreTeams }) {
   }
 
   return (
-    <section id="hero" className="tyrant-hero">
-      {/* Previous Exiles Rotating Background Banner with Smooth Crossfade & Ken Burns Zoom */}
-      <div className="tyrant-hero__banner-container">
+    <section id="hero" className="apex-hero">
+      {/* Full-Bleed Diagonal Crimson & Rotating Exiles Background Stage */}
+      <div className="apex-hero__stage">
         {backgrounds.map((bg, idx) => (
           <div
             key={bg}
-            className={`tyrant-hero__bg-slide ${idx === bgIndex ? 'is-active' : ''}`}
+            className={`apex-hero__bg-slide ${idx === bgIndex ? 'is-active' : ''}`}
             style={{ backgroundImage: `url('${bg}')` }}
           />
         ))}
-        <div className="tyrant-hero__cyber-grid" />
-        <div className="tyrant-hero__banner-overlay" />
 
-        {/* Tactical HUD Slide Switcher */}
-        <div className="tyrant-hero__hud-bar tyrant-container">
-          <div className="tyrant-hero__hud-tag">
-            <span className="tyrant-hero__live-dot" />
-            <span>EXILES COMPETITIVE HQ // MANILA, PH</span>
-          </div>
-          <div className="tyrant-hero__slide-indicators">
-            {backgrounds.map((_, idx) => (
+        {/* Diagonal Crimson Slash & Dark Vignette */}
+        <div className="apex-hero__red-slash" />
+        <div className="apex-hero__vignette" />
+
+        <div className="tyrant-container apex-hero__content-wrap">
+          {/* Left Hero Lockup */}
+          <div className="apex-hero__left">
+            <div className="apex-hero__giant-logo">
+              <span className="apex-hero__giant-main">EXILES</span>
+              <div className="apex-hero__giant-sub-row">
+                <span className="apex-hero__line" />
+                <span className="apex-hero__giant-sub">LEGENDS</span>
+                <span className="apex-hero__line" />
+              </div>
+            </div>
+
+            <h1 className="apex-hero__headline">
+              META CHANGES.
+              <br />
+              VICTORY REMAINS.
+            </h1>
+
+            <p className="apex-hero__desc">
+              Drop in. Squad up. Compete across 10 premier titles and be the last
+              team standing with the Team Exiles competitive organization.
+            </p>
+
+            <div className="apex-hero__cta-row">
               <button
-                key={idx}
                 type="button"
-                className={`tyrant-hero__slide-dot ${idx === bgIndex ? 'active' : ''}`}
-                onClick={() => {
-                  playClickSound()
-                  setBgIndex(idx)
-                }}
+                className="apex-btn apex-btn--red"
+                onClick={handleScrollToTeams}
                 onMouseEnter={playHoverSound}
-                aria-label={`Select Hero Background ${idx + 1}`}
               >
-                0{idx + 1}
+                <span>COMPETE NOW</span>
+                <span className="apex-btn__arrow">›</span>
               </button>
-            ))}
+
+              <button
+                type="button"
+                className="apex-btn apex-btn--dark"
+                onClick={handleScrollToLegends}
+                onMouseEnter={playHoverSound}
+              >
+                <span>MEET COMMAND</span>
+                <PlayIcon className="apex-svg-icon apex-svg-icon--xs" />
+              </button>
+            </div>
+
+            {/* Background Slide Dots */}
+            <div className="apex-hero__bg-dots">
+              {backgrounds.map((_, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  className={`apex-hero__bg-dot ${idx === bgIndex ? 'active' : ''}`}
+                  onClick={() => {
+                    playClickSound()
+                    setBgIndex(idx)
+                  }}
+                  onMouseEnter={playHoverSound}
+                  aria-label={`Hero Slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom-Right Season / Division Callout Box */}
+          <div
+            className="apex-hero__season-box"
+            onClick={handleScrollToTeams}
+            onMouseEnter={playHoverSound}
+          >
+            <span className="apex-hero__season-tag">SEASON 2026</span>
+            <strong className="apex-hero__season-name">UPHEAVAL</strong>
+            <span className="apex-hero__season-link">10 ACTIVE GAMES ›</span>
           </div>
         </div>
       </div>
 
-      {/* Hero Headline & Statement Section */}
-      <div className="tyrant-hero__statement">
-        <div className="tyrant-container">
-          <div className="tyrant-hero__statement-grid reveal-on-scroll">
-            {/* Left Column */}
-            <div className="tyrant-hero__statement-left">
-              <div className="tyrant-hero__eyebrow">
-                <span className="tyrant-hero__bullet" />
-                <span>TIER-1 COMPETITIVE ESPORTS ORGANIZATION</span>
-              </div>
-              <h1 className="tyrant-hero__title">
-                BUILT TO DOMINATE.
-                <br />
-                <span className="tyrant-text-accent">WE RISE ABOVE.</span>
-              </h1>
-            </div>
+      {/* Platform / Games Strip Bar Directly Below Hero (Vector SVG Icons Only) */}
+      <div className="apex-platforms-bar">
+        <div className="apex-platforms-bar__tag">
+          <span>ACTIVE</span>
+          <CrossedSwordsIcon className="apex-svg-icon apex-svg-icon--sm" />
+          <span>GAMES</span>
+        </div>
 
-            {/* Right Column */}
-            <div className="tyrant-hero__statement-right">
-              <p className="tyrant-hero__desc">
-                A championship-driven Philippine esports organization fielding premier
-                rosters across tactical shooters and competitive leagues. Relentless preparation.
-                Unmatched stage execution.
-              </p>
-              <div className="tyrant-hero__actions">
-                <button
-                  type="button"
-                  className="tyrant-btn tyrant-btn--primary"
-                  onClick={handleScrollToTeams}
-                  onMouseEnter={playHoverSound}
-                >
-                  VIEW PRO ROSTERS
-                </button>
-                <button
-                  type="button"
-                  className="tyrant-btn tyrant-btn--outline"
-                  onClick={handleScrollToCreators}
-                  onMouseEnter={playHoverSound}
-                >
-                  MEET THE PLAYERS
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* Competitive Org Telemetry Stats Strip */}
-          <div className="tyrant-hero__stats-strip reveal-on-scroll">
-            {orgStats.map((stat, idx) => (
-              <div
-                key={stat.label}
-                className="tyrant-hero__stat-item"
-                style={{ '--stagger-index': idx }}
-              >
-                <span className="tyrant-hero__stat-value">{stat.value}</span>
-                <span className="tyrant-hero__stat-label">{stat.label}</span>
-              </div>
-            ))}
-          </div>
+        <div className="apex-platforms-bar__list">
+          {teams.map((game) => (
+            <button
+              key={game.id}
+              type="button"
+              className="apex-platforms-bar__item"
+              onClick={handleScrollToTeams}
+              onMouseEnter={playHoverSound}
+            >
+              <GameSvgIcon gameId={game.id} className="apex-svg-icon apex-svg-icon--sm" />
+              <span className="apex-platforms-bar__name">{game.name}</span>
+            </button>
+          ))}
         </div>
       </div>
     </section>

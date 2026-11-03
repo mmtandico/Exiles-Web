@@ -1,16 +1,36 @@
 import { useState } from 'react'
 import { management } from '../data/siteContent'
 import { playClickSound, playHoverSound, playEnterSound } from '../utils/soundEffects'
+import { BoltIcon } from './Icons'
 
 const departments = ['ALL', 'FOUNDER', 'EXECUTIVE', 'ADMINS', 'MANAGERS', 'DIRECTORS']
 
 export default function ManagementSection({ onOpenProfile }) {
   const [activeDept, setActiveDept] = useState('ALL')
+  const [pageOffset, setPageOffset] = useState(0)
+  const [showAllGrid, setShowAllGrid] = useState(false)
 
   const filteredStaff =
     activeDept === 'ALL'
       ? management
       : management.filter((m) => m.department === activeDept)
+
+  const visibleSlantedList = showAllGrid
+    ? filteredStaff
+    : filteredStaff
+    .slice(pageOffset, pageOffset + 6)
+    .concat(
+      pageOffset + 6 > filteredStaff.length
+        ? filteredStaff.slice(0, Math.max(0, 6 - (filteredStaff.length - pageOffset)))
+        : []
+    )
+    .slice(0, Math.min(6, filteredStaff.length))
+
+  const handleNextPage = () => {
+    playClickSound('primary')
+    if (filteredStaff.length <= 6) return
+    setPageOffset((prev) => (prev + 6) % filteredStaff.length)
+  }
 
   const handleOpenStaff = (person) => {
     playEnterSound()
@@ -26,67 +46,35 @@ export default function ManagementSection({ onOpenProfile }) {
   }
 
   return (
-    <section id="management" className="tyrant-section tyrant-management">
-      {/* Animated Floating Profile Wall Behind Team Exiles Community */}
-      <div className="tyrant-community-bg" aria-hidden="true">
-        <div className="tyrant-community-bg__row tyrant-community-bg__row--left">
-          {[...management, ...management].map((item, idx) => (
-            <div
-              key={`bg-1-${item.id}-${idx}`}
-              className="tyrant-community-bg__pill"
-              style={{ '--pill-accent': item.accent || '#ff3700' }}
-            >
-              <img src={item.image} alt="" className="tyrant-community-bg__avatar" />
-              <div className="tyrant-community-bg__meta">
-                <span className="tyrant-community-bg__name">{item.name}</span>
-                <span className="tyrant-community-bg__dept">{item.department}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="tyrant-community-bg__row tyrant-community-bg__row--right">
-          {[...management].reverse().concat([...management].reverse()).map((item, idx) => (
-            <div
-              key={`bg-2-${item.id}-${idx}`}
-              className="tyrant-community-bg__pill"
-              style={{ '--pill-accent': item.accent || '#ff3700' }}
-            >
-              <img src={item.image} alt="" className="tyrant-community-bg__avatar" />
-              <div className="tyrant-community-bg__meta">
-                <span className="tyrant-community-bg__name">{item.name}</span>
-                <span className="tyrant-community-bg__dept">{item.rankCode || item.department}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
+    <section id="management" className="apex-legends-section tyrant-management">
       <div className="tyrant-container tyrant-management__container">
-        {/* Section Header */}
-        <div className="tyrant-creators__header reveal-on-scroll">
-          <div className="tyrant-creators__header-left">
-            <div className="tyrant-section-tag">03 / COMMAND HIERARCHY</div>
-            <h2 className="tyrant-creators__title">
-              BEHIND TEAM
-              <br />
-              <span className="tyrant-text-accent">EXILES COMMUNITY.</span>
-            </h2>
+        {/* Apex-Style Section Header Row */}
+        <div className="apex-section-header reveal-on-scroll">
+          <div className="apex-section-header__left">
+            <h2 className="apex-section-header__title">CHOOSE YOUR LEGEND</h2>
+            <span className="apex-section-header__red-bar" />
+            <span className="apex-section-header__sub">
+              TEAM EXILES COMMUNITY ({management.length})
+            </span>
           </div>
 
-          <div className="tyrant-creators__header-right">
-            <p className="tyrant-creators__lead">
-              THE FOUNDER, EXECUTIVE, ADMINS, MANAGERS & DIRECTORS
-              <br />
-              LEADING THE EXILES COMPETITIVE ECOSYSTEM.
-            </p>
-            <div className="tyrant-creators__count-highlight">
-              FOUNDER • EXECUTIVE • 3 ADMINS • 2 MANAGERS • 12 DIRECTORS
-            </div>
+          <div className="apex-section-header__right">
+            <button
+              type="button"
+              className="apex-view-all-link"
+              onClick={() => {
+                playClickSound('primary')
+                setShowAllGrid((prev) => !prev)
+              }}
+              onMouseEnter={playHoverSound}
+            >
+              {showAllGrid ? 'SHOW 6-SLANT ROW' : `VIEW ALL ${filteredStaff.length} LEGENDS`}{' '}
+              <span>→</span>
+            </button>
           </div>
         </div>
 
-        {/* Department Filters + Random Animated Profile Spotlight Button */}
+        {/* Hierarchy Filter Tabs + Random Spotlight */}
         <div className="tyrant-filters-bar reveal-on-scroll">
           <div className="tyrant-filters">
             {departments.map((dept) => (
@@ -97,6 +85,7 @@ export default function ManagementSection({ onOpenProfile }) {
                 onClick={() => {
                   playClickSound()
                   setActiveDept(dept)
+                  setPageOffset(0)
                 }}
                 onMouseEnter={playHoverSound}
               >
@@ -111,84 +100,81 @@ export default function ManagementSection({ onOpenProfile }) {
             onClick={handleRandomSpotlight}
             onMouseEnter={playHoverSound}
           >
-            <span>⚡ RANDOM PROFILE SPOTLIGHT</span>
+            <BoltIcon className="apex-svg-icon apex-svg-icon--xs" />
+            <span style={{ marginLeft: '6px' }}>RANDOM PROFILE SPOTLIGHT</span>
           </button>
         </div>
 
-        {/* Staff Cards Grid (4 Columns) with Animated Cyber Profile Backdrops */}
-        <div key={activeDept} className="tyrant-cards-grid">
-          {filteredStaff.map((person, idx) => (
-            <div
-              key={person.id}
-              className={`tyrant-card tyrant-card--staff tyrant-card--animated tyrant-card--pattern-${person.animPattern || 'pulse'}`}
-              style={{
-                '--stagger-index': idx,
-                '--profile-accent': person.accent || '#ff3700',
-              }}
-              onClick={() => handleOpenStaff(person)}
-              onMouseEnter={playHoverSound}
-            >
-              <div className="tyrant-card__top-bar">
-                <span className="tyrant-card__division-badge">
-                  {person.rankCode ? `${person.rankCode} // ${person.department}` : person.department}
-                </span>
-                <button
-                  type="button"
-                  className="tyrant-card__view-btn"
-                  onClick={(e) => {
-                    e.stopPropagation()
-                    handleOpenStaff(person)
-                  }}
-                >
-                  DOSSIER
-                </button>
-              </div>
-
-              {/* Animated Cybernetic Profile Backdrop & Avatar */}
-              <div className="tyrant-animated-profile">
-                <div className="tyrant-animated-profile__aura" />
-                <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--outer" />
-                <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--inner" />
-                <div className="tyrant-animated-profile__scanline" />
-                <div className="tyrant-animated-profile__particles">
-                  <span />
-                  <span />
-                  <span />
-                  <span />
-                </div>
-                <div className="tyrant-animated-profile__avatar-frame">
-                  <img
-                    src={person.image}
-                    alt={person.name}
-                    className="tyrant-animated-profile__avatar-img"
-                    loading="lazy"
-                  />
-                </div>
-              </div>
-
-              <div className="tyrant-card__gradient" />
-
-              <div className="tyrant-card__bottom">
-                <div className="tyrant-card__info">
-                  <h3 className="tyrant-card__name">{person.name}</h3>
-                  <span className="tyrant-card__role">{person.role}</span>
-
-                  {(person.winRate || person.kda) && (
-                    <div className="tyrant-card__stats-row">
-                      {person.winRate && (
-                        <span className="tyrant-card__stat-chip">{person.winRate}</span>
-                      )}
-                      {person.kda && (
-                        <span className="tyrant-card__stat-chip">{person.kda}</span>
-                      )}
+        {/* Slanted Parallelogram Legend Strip with 3D Minecraft Characters */}
+        <div className="apex-legends-strip-wrapper">
+          <div
+            key={`${activeDept}-${pageOffset}-${showAllGrid}`}
+            className={`apex-legends-strip ${showAllGrid ? 'apex-legends-strip--all' : ''}`}
+          >
+            {visibleSlantedList.map((person, idx) => (
+              <div
+                key={`${person.id}-${idx}`}
+                className="apex-legend-item tyrant-card--animated"
+                style={{
+                  '--stagger-index': idx,
+                  '--profile-accent': person.accent || '#dc2626',
+                }}
+                onClick={() => handleOpenStaff(person)}
+                onMouseEnter={playHoverSound}
+              >
+                {/* Slanted Parallelogram Portrait Box with Animated Cyber Backdrop & Minecraft Character */}
+                <div className="apex-legend-item__slant-frame">
+                  <div className="apex-legend-item__unskew">
+                    <div className="tyrant-animated-profile">
+                      <div className="tyrant-animated-profile__aura" />
+                      <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--outer" />
+                      <div className="tyrant-animated-profile__ring tyrant-animated-profile__ring--inner" />
+                      <div className="tyrant-animated-profile__scanline" />
+                      <div className="tyrant-animated-profile__particles">
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                        <div className="tyrant-animated-profile__mc-wrap">
+                          <img
+                            src={person.image}
+                            alt={person.name}
+                            className="tyrant-animated-profile__mc-img"
+                            loading="lazy"
+                          />
+                        </div>
+                      </div>
                     </div>
-                  )}
+                  </div>
+
+                  {/* Legend Name & Role Below Slanted Portrait */}
+                  <div className="apex-legend-item__caption">
+                    <div className="apex-legend-item__name-row">
+                      <span className="apex-legend-item__name">{person.name}</span>
+                      <span className="apex-legend-item__chevron">›</span>
+                    </div>
+                    <span className="apex-legend-item__role">{person.department}</span>
+                  </div>
                 </div>
+            ))}
               </div>
-            </div>
-          ))}
+
+          {/* Red "+" Next-Batch Button on the Right */ }
+          {!showAllGrid && filteredStaff.length > 6 && (
+              <button
+                type="button"
+                className="apex-legends-plus-btn"
+                onClick={handleNextPage}
+                onMouseEnter={playHoverSound}
+                title="Next Legends"
+                aria-label="Cycle Next Legends"
+              >
+                +
+              </button>
+            )}
+          </div>
         </div>
-      </div>
     </section>
   )
 }
