@@ -1,7 +1,25 @@
-// Web Audio API Synthesizer for Tactical Esports UI Sound Effects
+// Web Audio API Synthesizer for Tactical Esports UI Sound Effects + Gaming BGM Controller
 
 let audioCtx = null
 let sfxMuted = false
+let bgmAudio = null
+let bgmPlaying = false
+const bgmListeners = new Set()
+
+function notifyBgmListeners() {
+  bgmListeners.forEach((fn) => {
+    try {
+      fn({ playing: bgmPlaying, muted: sfxMuted })
+    } catch {
+      // Ignore listener errors
+    }
+  })
+}
+
+export function subscribeAudioState(listener) {
+  bgmListeners.add(listener)
+  return () => bgmListeners.delete(listener)
+}
 
 function getAudioContext() {
   if (typeof window === 'undefined') return null
@@ -12,9 +30,59 @@ function getAudioContext() {
     }
   }
   if (audioCtx && audioCtx.state === 'suspended') {
-    audioCtx.resume().catch(() => {})
+    audioCtx.resume().catch(() => { })
   }
   return audioCtx
+}
+
+function getBgmElement() {
+  if (typeof window === 'undefined') return null
+  if (!bgmAudio) {
+    const probe = document.createElement('audio')
+    const canPlayWebm = Boolean(
+      probe.canPlayType && probe.canPlayType('audio/webm; codecs="opus"').replace(/no/, '')
+    )
+    bgmAudio = new Audio(canPlayWebm ? '/audio/1998phantom.webm' : '/audio/1998phantom.m4a')
+    bgmAudio.loop = true
+    bgmAudio.volume = 0.35
+    bgmAudio.preload = 'auto'
+    bgmAudio.addEventListener('error', () => {
+      if (bgmAudio.src.endsWith('.webm')) {
+        bgmAudio.src = '/audio/1998phantom.m4a'
+      }
+    })
+    bgmAudio.addEventListener('play', () => {
+      bgmPlaying = true
+      notifyBgmListeners()
+    })
+    bgmAudio.addEventListener('pause', () => {
+      bgmPlaying = false
+      notifyBgmListeners()
+    })
+  }
+  return bgmAudio
+}
+
+export function startBackgroundMusic() {
+  if (sfxMuted) return
+  const audio = getBgmElement()
+  if (!audio) return
+  audio.muted = false
+  if (audio.paused) {
+    audio.play().catch(() => {
+      // Autoplay blocked until next user gesture
+    })
+  }
+}
+
+export function stopBackgroundMusic() {
+  const audio = getBgmElement()
+  if (!audio) return
+  audio.pause()
+}
+
+export function isBgmPlaying() {
+  return bgmPlaying && !sfxMuted
 }
 
 export function isSfxMuted() {
@@ -23,6 +91,16 @@ export function isSfxMuted() {
 
 export function setSfxMuted(muted) {
   sfxMuted = Boolean(muted)
+  const audio = getBgmElement()
+  if (audio) {
+    if (sfxMuted) {
+      audio.pause()
+    } else {
+      audio.muted = false
+      audio.play().catch(() => { })
+    }
+  }
+  notifyBgmListeners()
   return sfxMuted
 }
 
@@ -31,6 +109,7 @@ export function setSfxMuted(muted) {
  */
 export function playClickSound(variant = 'default') {
   if (sfxMuted) return
+  startBackgroundMusic()
   try {
     const ctx = getAudioContext()
     if (!ctx) return
@@ -119,6 +198,7 @@ export function playHoverSound() {
  */
 export function playEnterSound() {
   if (sfxMuted) return
+  startBackgroundMusic()
   try {
     const ctx = getAudioContext()
     if (!ctx) return
@@ -160,4 +240,3 @@ export function playEnterSound() {
     // Ignore
   }
 }
-
